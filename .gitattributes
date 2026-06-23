@@ -1,0 +1,14 @@
+# Normalize line endings so Mac (LF) and Windows (CRLF) don't fight.
+# Everything is stored as LF in the repo; Git checks out native on each OS.
+* text=auto eol=lf
+
+# Keep the lockfile diffs quiet — it's machine-generated.
+package-lock.json -diff linguist-generated
+
+# Binary assets: never touch line endings.
+*.svg   text eol=lf
+*.png   binary
+*.jpg   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary

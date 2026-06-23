@@ -8,8 +8,10 @@ Built with **React 18 + Vite 6 + Tailwind CSS v4 + Framer Motion**.
 
 ## Run locally
 
+Requires **Node 20+** (see `.nvmrc` — `nvm use` picks it up).
+
 ```bash
-npm install
+npm install      # or `npm ci` for an exact, lockfile-pinned install
 npm run dev      # http://localhost:5173  (or http://127.0.0.1:5173)
 ```
 
@@ -19,6 +21,22 @@ Other scripts:
 npm run build    # production build to /dist
 npm run preview  # preview the production build
 ```
+
+## Working across machines (Mac + Windows)
+
+Two devs, two OSes — a few rules keep it smooth:
+
+- **Each machine runs its own `npm install`.** Never copy or sync `node_modules`
+  between machines: `esbuild`, `rollup`, and `tailwind` ship **OS-native binaries**,
+  so a Mac install will not run on Windows (and vice-versa). `node_modules/` and
+  `dist/` are git-ignored for this reason.
+- **Commit `package-lock.json`** — it's the source of truth. After it changes, the
+  other person runs `npm ci`.
+- **Windows / PATH:** if `npm` isn't found, Node is installed but not on PATH. Add
+  `C:\Program Files\nodejs` to PATH (or run `setx PATH "%PATH%;C:\Program Files\nodejs"`
+  once and reopen the terminal).
+- **`.claude/settings.local.json` is per-machine** (git-ignored). Shared team
+  permissions live in `.claude/settings.json`.
 
 ## Design system
 
