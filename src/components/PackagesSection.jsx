@@ -27,7 +27,15 @@ function PackageCard({ pkg, featured, t }) {
         <p className={`text-xs ${featured ? 'text-white/70' : 'text-muted'}`}>{p.scoped}</p>
       </div>
 
-      <ul className="mt-6 flex flex-1 flex-col gap-3">
+      <p
+        className={`mt-6 text-xs font-semibold uppercase tracking-wide ${
+          featured ? 'text-white/70' : 'text-muted'
+        }`}
+      >
+        {p.includesLabel}
+      </p>
+
+      <ul className="mt-3 flex flex-1 flex-col gap-3">
         {pkg.includes.map((item) => (
           <li key={item} className={`flex items-start gap-2.5 text-sm ${featured ? 'text-white' : 'text-ink'}`}>
             <span

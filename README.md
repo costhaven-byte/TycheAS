@@ -1,6 +1,6 @@
 # TycheAS — Website
 
-A modern, premium marketing site for **TycheAS** — we build hand-coded,
+A modern, premium marketing site for **TycheAS** — we build coded,
 high-converting websites plus AI booking assistants, quote systems, and lead
 qualification for local service businesses. *Fortune favors the fast.*
 
@@ -78,7 +78,7 @@ email / CRM / automation, replace the `console.log` in `handleSubmit` with a
 `fetch()` to your endpoint — the payload shape is already clean.
 
 Validated fields: Name, Business name, Industry, Email (format-checked),
-Phone/WhatsApp (format-checked), "What do you need help with?" (dropdown), Message.
+Phone (format-checked), "What do you need help with?" (dropdown), Message.
 
 ## Notes
 

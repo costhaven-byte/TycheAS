@@ -1,6 +1,6 @@
 import { Container, Button } from './ui.jsx'
 import Logo from './Logo.jsx'
-import { IconWhatsApp } from './icons.jsx'
+import { IconInstagram, IconTiktok, IconLinkedIn, IconFacebook } from './icons.jsx'
 import { useI18n } from '../i18n/context.jsx'
 
 export default function Footer() {
@@ -14,6 +14,13 @@ export default function Footer() {
     { label: t.nav.industries, href: '#industries' },
     { label: t.nav.process, href: '#process' },
     { label: t.nav.faq, href: '#faq' },
+  ]
+
+  const SOCIALS = [
+    { label: 'Instagram', href: 'https://instagram.com/tyche.as', Icon: IconInstagram },
+    { label: 'TikTok', href: 'https://tiktok.com/@tyche.as', Icon: IconTiktok },
+    { label: 'LinkedIn', href: 'https://linkedin.com/company/tycheas', Icon: IconLinkedIn },
+    { label: 'Facebook', href: 'https://facebook.com/TycheAS', Icon: IconFacebook },
   ]
 
   return (
@@ -46,12 +53,26 @@ export default function Footer() {
               {t.cta.bookAudit}
             </Button>
             <a
-              href="mailto:hello@tycheas.com"
+              href="mailto:contact.tycheas@gmail.com"
               className="mt-4 block text-sm text-ink-soft transition-colors hover:text-clay-ink"
               dir="ltr"
             >
-              hello@tycheas.com
+              contact.tycheas@gmail.com
             </a>
+            <div className="mt-5 flex items-center gap-3">
+              {SOCIALS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-line text-ink-soft transition-colors hover:border-clay hover:text-clay-ink"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -61,7 +82,6 @@ export default function Footer() {
             href="#contact"
             className="inline-flex items-center gap-1.5 text-xs text-ink-soft transition-colors hover:text-win"
           >
-            <IconWhatsApp className="h-4 w-4" />
             {t.cta.chatWithUs}
           </a>
         </div>

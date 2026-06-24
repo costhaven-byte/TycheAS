@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Container, Reveal, Kicker, Button } from './ui.jsx'
-import { IconCheck, IconShield, IconClock, IconBolt } from './icons.jsx'
+import { IconCheck, IconShield, IconClock, IconBolt, IconSpark } from './icons.jsx'
 import { useI18n } from '../i18n/context.jsx'
 import { HELP_VALUES } from '../i18n/translations.js'
+import { submitLead } from '../admin/api.js'
 
 const INITIAL = {
   name: '',
@@ -15,7 +16,7 @@ const INITIAL = {
   message: '',
 }
 
-const PERK_ICONS = [IconClock, IconShield, IconBolt]
+const PERK_ICONS = [IconClock, IconShield, IconBolt, IconSpark]
 
 // Returns a map of field -> error code (keys into t.contact.errors).
 function validate(values) {
@@ -88,10 +89,13 @@ export default function ContactForm() {
       first?.focus()
       return
     }
-    // Front-end only for now. Structured payload — ready to wire to email/CRM/automation.
-    const payload = { ...values, submittedAt: new Date().toISOString() }
-    // eslint-disable-next-line no-console
-    console.log('TycheAS — new lead:', payload)
+    // Send the lead straight into the Potential deals tab (the core inbound flow).
+    // Fire-and-forget: the success screen shows regardless; submitLead logs on
+    // failure and degrades gracefully when the backend isn't configured.
+    submitLead(values).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error('TycheAS — lead submission failed:', err)
+    })
     setSubmitted(true)
     setValues(INITIAL)
   }
@@ -122,8 +126,8 @@ export default function ContactForm() {
               </ul>
               <p className="mt-8 rounded-2xl border border-line bg-surface p-5 text-sm leading-relaxed text-ink-soft">
                 {c.emailPre}
-                <a href="mailto:hello@tycheas.com" className="font-semibold text-clay-ink hover:text-clay" dir="ltr">
-                  hello@tycheas.com
+                <a href="mailto:contact.tycheas@gmail.com" className="font-semibold text-clay-ink hover:text-clay" dir="ltr">
+                  contact.tycheas@gmail.com
                 </a>
               </p>
             </div>
