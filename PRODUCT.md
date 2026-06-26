@@ -14,18 +14,24 @@ missed leads, slow replies, and slow quotes.
 
 ## Product Purpose
 
-TycheAS builds practical revenue systems for local service businesses:
-hand-built high-converting websites (coded, not generated), plus AI booking
-assistants, quote/estimate assistants, and lead qualification + follow-up. The
+Lucrator is a CRM for local service businesses. The core product is the system
+of record for leads and customers: a live pipeline, hot/warm/cold scoring, status
+tracking, and an analytics dashboard — so no lead slips through. Optional growth
+modules bolt straight onto the pipeline: a 24/7 chatbot, a follow-up & reviews
+engine (with direct links to Google, Facebook, and others), a quote assistant, an
+appointment manager, and a landing page. The Growth Engine bundle packages every
+module together with 24/7 priority support, increased chatbot limits, and a
+done-for-you custom CRM setup — sold as the best-value, most-bought option. The
 site's job is to make a skeptical owner think "this is real, this would make me
 money" and book a free audit.
 
 ## Brand Personality
 
 Grounded, precise, prosperous. The voice of a sharp operator who closes deals —
-confident and direct, never futuristic or buzzwordy. Named for Tyche (fortune):
-the through-line is speed turning into won business — "fortune favors the fast."
-Trust is earned by sounding believable, not by promising 10x overnight.
+confident and direct, never futuristic or buzzwordy. The name is Lucrator (Latin
+*lucrari*, "to gain/profit"): the through-line is leads turned into revenue —
+"turn leads into revenue." Trust is earned by sounding believable, not by
+promising 10x overnight.
 
 ## Anti-references
 

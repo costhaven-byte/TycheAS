@@ -3,7 +3,7 @@ import { translations } from './translations.js'
 
 const I18nContext = createContext(null)
 
-const STORAGE_KEY = 'tycheas-lang'
+const STORAGE_KEY = 'lucrator-lang'
 
 function getInitialLang() {
   if (typeof window === 'undefined') return 'en'

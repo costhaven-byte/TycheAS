@@ -1,4 +1,4 @@
-# TycheAS — allow everything, point crawlers and answer engines at the sitemap.
+# Lucrator — allow everything, point crawlers and answer engines at the sitemap.
 User-agent: *
 Allow: /
 
@@ -14,4 +14,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://tycheas.com/sitemap.xml
+Sitemap: https://lucrator.com/sitemap.xml

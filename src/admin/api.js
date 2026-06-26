@@ -156,7 +156,7 @@ export async function submitLead(values) {
   }
   if (!IS_LIVE) {
     // eslint-disable-next-line no-console
-    console.log('TycheAS — new lead (backend not configured):', { ...values })
+    console.log('Lucrator — new lead (backend not configured):', { ...values })
     return { ok: true, offline: true }
   }
   await post(payload)

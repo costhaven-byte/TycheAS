@@ -1,31 +1,31 @@
 @import 'tailwindcss';
 
 /*
-  TycheAS — "engineered fortune" light operator theme.
-  Warm-neutral off-white (chroma kept near-zero to dodge the cream/sand tell),
-  near-black ink, one committed clay/terracotta brand color, a green "won" signal.
-  No gradient text, no gradient buttons. Color carries meaning by itself.
+  Lucrator — strict two-color theme: white + wine red, nothing else.
+  Every surface is white / near-white; every mark, line, and text tone is a
+  shade of the wine-red brand hue. No greens, no blues, no warm neutrals —
+  meaning is carried by intensity of the single wine hue, not by other colors.
 */
 @theme {
-  --color-bg: oklch(0.975 0.004 255);
+  --color-bg: oklch(0.985 0.004 12);
   --color-surface: oklch(1 0 0);
-  --color-sunken: oklch(0.955 0.005 255);
-  --color-ink: oklch(0.23 0.014 265);
-  --color-ink-soft: oklch(0.41 0.012 265);
-  --color-muted: oklch(0.52 0.011 265);
-  --color-line: oklch(0.905 0.005 265);
-  --color-line-strong: oklch(0.84 0.007 265);
+  --color-sunken: oklch(0.966 0.008 12);
+  --color-ink: oklch(0.25 0.05 14);
+  --color-ink-soft: oklch(0.42 0.06 14);
+  --color-muted: oklch(0.55 0.05 14);
+  --color-line: oklch(0.9 0.018 14);
+  --color-line-strong: oklch(0.82 0.03 14);
 
-  /* brand: clay / terracotta */
-  --color-clay: oklch(0.585 0.152 47);
-  --color-clay-strong: oklch(0.5 0.135 45);
-  --color-clay-ink: oklch(0.44 0.12 44);
-  --color-clay-tint: oklch(0.955 0.03 55);
+  /* brand: wine red */
+  --color-clay: oklch(0.4 0.14 14);
+  --color-clay-strong: oklch(0.33 0.13 14);
+  --color-clay-ink: oklch(0.4 0.14 14);
+  --color-clay-tint: oklch(0.95 0.025 14);
 
-  /* functional signals */
-  --color-win: oklch(0.52 0.11 152);
-  --color-win-tint: oklch(0.95 0.04 152);
-  --color-alert: oklch(0.54 0.2 27);
+  /* functional signals — all collapse to the wine hue (intensity = meaning) */
+  --color-win: oklch(0.4 0.14 14);
+  --color-win-tint: oklch(0.95 0.025 14);
+  --color-alert: oklch(0.4 0.14 14);
 
   --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system,

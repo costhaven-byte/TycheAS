@@ -138,7 +138,7 @@ function ProofPanel({ proof }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute -bottom-4 -start-4 hidden rounded-2xl border border-line bg-surface px-4 py-3 shadow-soft sm:block">
+      <div className="pointer-events-none absolute -bottom-10 -start-5 hidden rounded-2xl border border-line bg-surface px-4 py-3 shadow-soft sm:block">
         <p className="text-xs text-muted">{proof.bookedLabel}</p>
         <p className="text-lg font-bold text-ink">{proof.bookedValue}</p>
       </div>

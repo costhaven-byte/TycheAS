@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Container, Reveal, SectionHeading } from './ui.jsx'
-import { IconArrow, IconGlobe, IconCalc, IconChat, IconShield } from './icons.jsx'
+import { IconArrow, IconTune, IconMap, IconTarget, IconShield } from './icons.jsx'
+import { DashboardMock, PipelineMock, ScoringMock, StatusMock } from './prototypes.jsx'
 import { useI18n } from '../i18n/context.jsx'
 
-const ICONS = [IconGlobe, IconCalc, IconChat, IconShield]
+// Index-aligned to t.services.items: Dashboard, Pipeline, Scoring, Status.
+const ICONS = [IconTune, IconMap, IconTarget, IconShield]
+const MOCKS = [DashboardMock, PipelineMock, ScoringMock, StatusMock]
 const EASE = [0.22, 1, 0.36, 1]
 
 // Tabbed layout (Braze-style): one service in focus at a time so each gets a
@@ -15,7 +18,7 @@ export default function ServicesSection() {
   const reduce = useReducedMotion()
   const [active, setActive] = useState(0)
   const item = s.items[active]
-  const Icon = ICONS[active]
+  const Mock = MOCKS[active]
 
   return (
     <section id="services" className="relative py-20 sm:py-28">
@@ -81,12 +84,14 @@ export default function ServicesSection() {
             </a>
           </div>
 
-          <div className="relative hidden items-center justify-center overflow-hidden bg-clay-tint md:flex">
+          <div className="relative hidden items-center justify-center overflow-hidden bg-clay-tint p-7 md:flex">
             <div
               aria-hidden
               className="absolute inset-0 bg-dots opacity-40 [mask-image:radial-gradient(80%_80%_at_50%_50%,#000,transparent)]"
             />
-            <Icon className="relative h-24 w-24 text-clay" />
+            <div className="relative w-full max-w-[19rem]">
+              <Mock />
+            </div>
           </div>
         </motion.div>
       </Container>

@@ -17,10 +17,10 @@ export default function Footer() {
   ]
 
   const SOCIALS = [
-    { label: 'Instagram', href: 'https://instagram.com/tyche.as', Icon: IconInstagram },
-    { label: 'TikTok', href: 'https://tiktok.com/@tyche.as', Icon: IconTiktok },
-    { label: 'LinkedIn', href: 'https://linkedin.com/company/tycheas', Icon: IconLinkedIn },
-    { label: 'Facebook', href: 'https://facebook.com/TycheAS', Icon: IconFacebook },
+    { label: 'Instagram', href: 'https://instagram.com/lucrator', Icon: IconInstagram },
+    { label: 'TikTok', href: 'https://tiktok.com/@lucrator', Icon: IconTiktok },
+    { label: 'LinkedIn', href: 'https://linkedin.com/company/lucrator', Icon: IconLinkedIn },
+    { label: 'Facebook', href: 'https://facebook.com/lucrator', Icon: IconFacebook },
   ]
 
   return (
@@ -53,11 +53,11 @@ export default function Footer() {
               {t.cta.bookAudit}
             </Button>
             <a
-              href="mailto:contact.tycheas@gmail.com"
+              href="mailto:contact.lucrator@gmail.com"
               className="mt-4 block text-sm text-ink-soft transition-colors hover:text-clay-ink"
               dir="ltr"
             >
-              contact.tycheas@gmail.com
+              contact.lucrator@gmail.com
             </a>
             <div className="mt-5 flex items-center gap-3">
               {SOCIALS.map(({ label, href, Icon }) => (
@@ -77,7 +77,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
-          <p className="text-xs text-muted">© {year} TycheAS. {f.rights}</p>
+          <p className="text-xs text-muted">© {year} Lucrator. {f.rights}</p>
           <a
             href="#contact"
             className="inline-flex items-center gap-1.5 text-xs text-ink-soft transition-colors hover:text-win"

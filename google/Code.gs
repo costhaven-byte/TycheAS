@@ -1,5 +1,5 @@
 /**
- * TycheAS — Admin dashboard backend (Google Apps Script Web App)
+ * Lucrator — Admin dashboard backend (Google Apps Script Web App)
  * --------------------------------------------------------------
  * This script turns the bound Google Sheet into the live database for the
  * admin dashboard. The dashboard reads and writes through this Web App, so

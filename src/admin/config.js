@@ -1,4 +1,4 @@
-// TycheAS admin dashboard configuration.
+// Lucrator admin dashboard configuration.
 // ---------------------------------------------------------------------------
 // After deploying the Apps Script Web App (see google/SETUP.md), paste the
 // values below. Until APPS_SCRIPT_URL is set, the dashboard runs on local mock
@@ -35,13 +35,15 @@ export const COLS = {
   },
 }
 
-// Reused from the marketing site's package lineup.
+// Reused from the marketing site's offering: the CRM plus à-la-carte add-ons.
 export const PACKAGES = [
-  'Launch Package',
-  'Booking Package',
-  'Quote Engine Package',
-  'Lead Rescue Package',
-  'Full AI Growth System',
+  'Lucrator CRM',
+  'CRM + Quote Assistant',
+  'CRM + Appointment Manager',
+  'CRM + Follow-up & Reviews',
+  'CRM + 24/7 Chatbot',
+  'CRM + Landing Page',
+  'Full Suite',
 ]
 
 export const CLOSERS = ['Ahmed', 'Selim']
@@ -55,7 +57,7 @@ export const MOCK_DATA = {
       'Client Name': 'Cedar & Sage Catering',
       'Client ID': 'P-260612-091500',
       Industry: 'Catering',
-      'Interest in Package': 'Quote Engine Package',
+      'Interest in Package': 'CRM + Quote Assistant',
       'Need (prototype)': 'Quote assistant demo on their menu',
       'Receive/Due Date': '2026-06-26',
       Status: 'Open',
@@ -65,7 +67,7 @@ export const MOCK_DATA = {
       'Client Name': 'NorthAir HVAC',
       'Client ID': 'P-260610-141200',
       Industry: 'HVAC',
-      'Interest in Package': 'Lead Rescue Package',
+      'Interest in Package': 'CRM + Follow-up & Reviews',
       'Need (prototype)': 'Missed-call follow-up flow',
       'Receive/Due Date': '2026-06-29',
       Status: 'In Progress',
@@ -76,7 +78,7 @@ export const MOCK_DATA = {
       'Client Name': 'Bloom Dental',
       'Client ID': 'P-260605-100000',
       Industry: 'Clinic',
-      'Interest in Package': 'Booking Package',
+      'Interest in Package': 'CRM + Appointment Manager',
       'Need (prototype)': 'Booking chatbot mock',
       'Receive/Due Date': '2026-06-24',
       Status: 'Completed',
@@ -86,7 +88,7 @@ export const MOCK_DATA = {
       'Client Name': 'Vista Realty',
       'Client ID': 'P-260601-120000',
       Industry: 'Real estate',
-      'Interest in Package': 'Launch Package',
+      'Interest in Package': 'CRM + Landing Page',
       'Need (prototype)': 'Landing page concept',
       'Receive/Due Date': '2026-06-18',
       Status: 'Canceled',
@@ -98,7 +100,7 @@ export const MOCK_DATA = {
       'Client Name': 'Bloom Dental',
       'Client ID': 'P-260605-100000',
       Industry: 'Clinic',
-      'Package Bought': 'Booking Package',
+      'Package Bought': 'CRM + Appointment Manager',
       Duration: '6 months',
       Closer: 'Selim',
       'Activation Date': '2026-06-15',
@@ -109,7 +111,7 @@ export const MOCK_DATA = {
       'Client Name': 'Apex Auto Repair',
       'Client ID': 'C-260520-090000',
       Industry: 'Mechanics',
-      'Package Bought': 'Quote Engine Package',
+      'Package Bought': 'CRM + Quote Assistant',
       Duration: '12 months',
       Closer: 'Ahmed',
       'Activation Date': '2026-06-01',

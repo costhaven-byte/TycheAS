@@ -5,7 +5,7 @@ import ProblemSection from './components/ProblemSection.jsx'
 import ServicesSection from './components/ServicesSection.jsx'
 import StatsBand from './components/StatsBand.jsx'
 import PackagesSection from './components/PackagesSection.jsx'
-import IndustriesSection from './components/IndustriesSection.jsx'
+import CalculatorSection from './components/CalculatorSection.jsx'
 import ProcessSection from './components/ProcessSection.jsx'
 import CTASection from './components/CTASection.jsx'
 import FAQSection from './components/FAQSection.jsx'
@@ -39,7 +39,7 @@ export default function App() {
         <ServicesSection />
         <StatsBand />
         <PackagesSection />
-        <IndustriesSection />
+        <CalculatorSection />
         <ProcessSection />
         <CTASection />
         <FAQSection />

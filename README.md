@@ -1,8 +1,9 @@
-# TycheAS — Website
+# Lucrator — Website
 
-A modern, premium marketing site for **TycheAS** — we build coded,
-high-converting websites plus AI booking assistants, quote systems, and lead
-qualification for local service businesses. *Fortune favors the fast.*
+A modern, premium marketing site for **Lucrator** — the CRM built for local
+service businesses: a live lead pipeline, hot/warm/cold scoring, and an analytics
+dashboard, plus optional add-ons for chat, follow-ups, reviews, quotes, and
+bookings. *Turn leads into revenue.*
 
 Built with **React 18 + Vite 6 + Tailwind CSS v4 + Framer Motion**.
 
@@ -54,13 +55,13 @@ src/
   App.jsx                 # page assembly
   index.css               # Tailwind v4 theme tokens + base/utility styles
   components/
-    Logo.jsx              # TycheAS wordmark + coin mark
+    Logo.jsx              # Lucrator wordmark + coin mark
     Header.jsx            # sticky nav + mobile menu + CTA
-    Hero.jsx              # headline, CTAs, trust line, "Lead Saver" proof panel
+    Hero.jsx              # headline, CTAs, trust line, CRM pipeline proof panel
     ProblemSection.jsx    # consequence-driven problem list
-    ServicesSection.jsx   # 4 service cards (Conversion Websites + 3 AI tools)
-    PackagesSection.jsx   # 5 packages; "Full AI Growth System" = solid-clay flagship
-    IndustriesSection.jsx # interactive industry → recommended systems grid
+    ServicesSection.jsx   # 4 CRM core capabilities (dashboard, pipeline, scoring, status)
+    PackagesSection.jsx   # 5 à-la-carte add-ons; "24/7 Chatbot" = solid-clay flagship
+    IndustriesSection.jsx # interactive industry → recommended CRM + add-on grid
     ProcessSection.jsx    # 5-step connected timeline
     CTASection.jsx        # solid-clay conversion banner
     FAQSection.jsx        # accordion FAQ

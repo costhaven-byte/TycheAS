@@ -94,7 +94,7 @@ export default function ContactForm() {
     // failure and degrades gracefully when the backend isn't configured.
     submitLead(values).catch((err) => {
       // eslint-disable-next-line no-console
-      console.error('TycheAS — lead submission failed:', err)
+      console.error('Lucrator — lead submission failed:', err)
     })
     setSubmitted(true)
     setValues(INITIAL)
@@ -126,8 +126,8 @@ export default function ContactForm() {
               </ul>
               <p className="mt-8 rounded-2xl border border-line bg-surface p-5 text-sm leading-relaxed text-ink-soft">
                 {c.emailPre}
-                <a href="mailto:contact.tycheas@gmail.com" className="font-semibold text-clay-ink hover:text-clay" dir="ltr">
-                  contact.tycheas@gmail.com
+                <a href="mailto:contact.lucrator@gmail.com" className="font-semibold text-clay-ink hover:text-clay" dir="ltr">
+                  contact.lucrator@gmail.com
                 </a>
               </p>
             </div>

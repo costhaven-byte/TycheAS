@@ -20,7 +20,7 @@ import {
   IconLock,
 } from './components/shared.jsx'
 
-const SESSION_KEY = 'tycheas_admin_ok'
+const SESSION_KEY = 'lucrator_admin_ok'
 
 const VIEWS = [
   { id: 'potential', label: 'Potential', Icon: IconTable },
@@ -54,7 +54,7 @@ function Gate({ onUnlock }) {
         <span className="grid h-12 w-12 place-items-center rounded-2xl bg-clay-tint text-clay-ink">
           <IconLock className="h-6 w-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold text-ink">TycheAS Admin</h1>
+        <h1 className="mt-5 text-2xl font-bold text-ink">Lucrator Admin</h1>
         <p className="mt-1.5 text-sm text-ink-soft">Enter the dashboard password to continue.</p>
         <input
           type="password"
@@ -192,9 +192,9 @@ export default function AdminApp() {
       <header className="sticky top-0 z-sticky border-b border-line bg-bg/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-clay text-sm font-bold text-white">T</span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-clay text-sm font-bold text-white">L</span>
             <div className="leading-tight">
-              <div className="text-sm font-bold text-ink">TycheAS</div>
+              <div className="text-sm font-bold text-ink">Lucrator</div>
               <div className="text-xs text-muted">Pipeline</div>
             </div>
           </div>

@@ -7,7 +7,7 @@ to the Sheet automatically — you never need to open the Sheet again.
 
 ## 1. Create the Sheet
 
-1. Go to [sheets.new](https://sheets.new) and name it e.g. **TycheAS — Pipeline**.
+1. Go to [sheets.new](https://sheets.new) and name it e.g. **Lucrator — Pipeline**.
 2. You don't need to add tabs or headers by hand — the script builds them.
 
 ## 2. Add the script
