@@ -39,10 +39,10 @@ export const translations = {
     },
     hero: {
       kicker: 'A CRM for local service businesses',
-      headPre: 'Every lead ',
-      headEm: 'captured, scored, and worked',
-      headPost: ' — in one simple CRM.',
-      sub: 'Lucrator gives you a live pipeline, hot/warm/cold scoring, and a real analytics dashboard — so no lead slips through. Add chat, follow-ups, quotes, and bookings when you need them.',
+      headPre: 'Nobody likes a ',
+      headEm: 'slow closer',
+      headPost: '.',
+      sub: 'Every lead you forget is money someone else keeps. Lucrator catches them, warms them up, and tells you exactly who to follow up with — before they go cold.',
       builtFor: 'Built for local service businesses',
       trust: ['HVAC', 'Mechanics', 'Catering', 'Clinics', 'Salons', 'Contractors'],
       proof: {
@@ -345,10 +345,10 @@ export const translations = {
     },
     hero: {
       kicker: 'نظام إدارة عملاء للأعمال المحلية',
-      headPre: 'كل عميل ',
-      headEm: 'يُلتقَط ويُصنَّف ويُتابَع',
-      headPost: ' — في نظام إدارة عملاء واحد بسيط.',
-      sub: 'يمنحك Lucrator مسار عملاء مباشرًا، وتصنيفًا ساخن/دافئ/بارد، ولوحة تحليلات حقيقية — حتى لا يضيع أي عميل. أضِف المحادثة والمتابعة والتسعير والحجز عند الحاجة.',
+      headPre: 'لا أحد يحب ',
+      headEm: 'من يتأخر في الإغلاق',
+      headPost: '.',
+      sub: 'كل عميل تنساه هو مال يكسبه غيرك. يلتقط Lucrator عملاءك، ويُبقيهم دافئين، ويخبرك بالضبط بمن تتابعه — قبل أن يبردوا.',
       builtFor: 'مصمَّم لأصحاب الخدمات المحلية',
       trust: ['التكييف', 'ميكانيكا السيارات', 'التموين', 'العيادات', 'الصالونات', 'المقاولون'],
       proof: {
