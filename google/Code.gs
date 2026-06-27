@@ -106,6 +106,8 @@ function handle(e, params) {
         return json({ ok: true, row: moveToClosed(params) });
       case 'updateDeal':
         return json({ ok: true, row: updateDeal(params) });
+      case 'deleteDeal':
+        return json({ ok: true, result: deleteDeal(params) });
       default:
         return json({ ok: false, error: 'Unknown action: ' + params.action });
     }
@@ -177,23 +179,12 @@ function updateDeal(p) {
 }
 
 /**
- * Move a prospect to "Closed deals": mark its status Completed in place, then
- * append a closed-deal row with the package/duration/closer/dates provided.
+ * Move a prospect to "Closed deals": append a closed-deal row with the
+ * package/duration/closer/dates provided, then REMOVE the prospect from
+ * "Potential deals" so it no longer shows on the Prospects page. The full
+ * record lives on in the Closed tab, so nothing is lost.
  */
 function moveToClosed(p) {
-  var pot = sheetFor('potential');
-  if (p.clientId) {
-    var data = pot.getDataRange().getValues();
-    var headers = data[0];
-    var idCol = headers.indexOf('Client ID');
-    var statusCol = headers.indexOf('Status');
-    for (var r = 1; r < data.length; r++) {
-      if (String(data[r][idCol]) === String(p.clientId)) {
-        pot.getRange(r + 1, statusCol + 1).setValue('Completed');
-        break;
-      }
-    }
-  }
   var closed = sheetFor('closed');
   var row = [
     p.clientName || '',
@@ -206,7 +197,36 @@ function moveToClosed(p) {
     p.endDate || '',
   ];
   closed.appendRow(row);
+  // Drop it from Potential now that it's closed.
+  if (p.clientId) removeProspectRow(p.clientId);
   return zip(SHEETS.closed.headers, row);
+}
+
+/**
+ * Permanently delete a prospect row from "Potential deals" by Client ID.
+ * Used to clear out canceled deals the team no longer wants in the database.
+ */
+function deleteDeal(p) {
+  if (!p.clientId) throw new Error('Missing clientId');
+  if (!removeProspectRow(p.clientId)) {
+    throw new Error('Deal not found: ' + p.clientId);
+  }
+  return { deleted: true, clientId: p.clientId };
+}
+
+/** Find a prospect by Client ID and delete its row. Returns true if removed. */
+function removeProspectRow(clientId) {
+  var pot = sheetFor('potential');
+  var data = pot.getDataRange().getValues();
+  var headers = data[0];
+  var idCol = headers.indexOf('Client ID');
+  for (var r = 1; r < data.length; r++) {
+    if (String(data[r][idCol]) === String(clientId)) {
+      pot.deleteRow(r + 1);
+      return true;
+    }
+  }
+  return false;
 }
 
 // ---- Helpers ----------------------------------------------------------------

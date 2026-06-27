@@ -235,6 +235,7 @@ export const translations = {
       yearlyPost: ' a year walking out the door.',
       cta: 'Book free audit',
       disclaimer: 'A rough estimate from the numbers you enter — your free audit gives you the real figure.',
+      currencyLabel: 'Currency',
     },
     process: {
       kicker: 'How it works',
@@ -541,6 +542,7 @@ export const translations = {
       yearlyPost: ' سنويًا تخرج من بين يديك.',
       cta: 'احجز تدقيقًا مجانيًا',
       disclaimer: 'تقدير تقريبي من الأرقام التي تُدخلها — تدقيقك المجاني يعطيك الرقم الحقيقي.',
+      currencyLabel: 'العملة',
     },
     process: {
       kicker: 'طريقة العمل',

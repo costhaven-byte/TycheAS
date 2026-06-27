@@ -2,7 +2,7 @@
 // The Google Sheet (via Apps Script) is the only datastore; this is its face.
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { listDeals, addProspect, moveToClosed, updateDeal } from './api.js'
+import { listDeals, addProspect, moveToClosed, updateDeal, deleteDeal } from './api.js'
 import { ADMIN_PASSWORD, IS_LIVE } from './config.js'
 import StatCards from './components/StatCards.jsx'
 import DealsTable from './components/DealsTable.jsx'
@@ -10,6 +10,7 @@ import Calendar from './components/Calendar.jsx'
 import AddProspectModal from './components/AddProspectModal.jsx'
 import MoveToClosedModal from './components/MoveToClosedModal.jsx'
 import DealStatusModal from './components/DealStatusModal.jsx'
+import DeleteDealModal from './components/DeleteDealModal.jsx'
 import {
   AdminButton,
   IconPlus,
@@ -136,6 +137,8 @@ export default function AdminApp() {
   const [moveTarget, setMoveTarget] = useState(null)
   // { mode: 'start' | 'cancel', deal } — drives the status-change modal.
   const [statusTarget, setStatusTarget] = useState(null)
+  // The canceled deal pending permanent deletion.
+  const [deleteTarget, setDeleteTarget] = useState(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -169,14 +172,21 @@ export default function AdminApp() {
     await updateDeal(values)
     await load()
   }
+  const handleDelete = async (values) => {
+    await deleteDeal(values)
+    await load()
+  }
 
   const tableProps = {
     potential: {
       kind: 'potential',
-      rows: data.potential,
+      // Closed deals leave the Prospects page. New closes are deleted from the
+      // sheet; this also hides any legacy 'Completed' rows left from before.
+      rows: data.potential.filter((r) => r.Status !== 'Completed'),
       onMove: (row) => setMoveTarget(row),
       onStart: (row) => setStatusTarget({ mode: 'start', deal: row }),
       onCancel: (row) => setStatusTarget({ mode: 'cancel', deal: row }),
+      onDelete: (row) => setDeleteTarget(row),
       emptyState: <EmptyState kind="potential" onAdd={() => setAddOpen(true)} />,
     },
     closed: {
@@ -306,6 +316,11 @@ export default function AdminApp() {
         deal={statusTarget?.deal}
         onClose={() => setStatusTarget(null)}
         onSubmit={handleStatus}
+      />
+      <DeleteDealModal
+        deal={deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
       />
     </div>
   )

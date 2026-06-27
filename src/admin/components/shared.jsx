@@ -263,3 +263,19 @@ export const IconXCircle = (p) => (
     <path d="M15 9l-6 6M9 9l6 6" />
   </svg>
 )
+export const IconSearch = (p) => (
+  <svg {...ic} {...p}>
+    <circle cx="11" cy="11" r="7" />
+    <path d="M21 21l-4.3-4.3" />
+  </svg>
+)
+export const IconTrash = (p) => (
+  <svg {...ic} {...p}>
+    <path d="M4 7h16M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M6 7l1 13a1 1 0 001 1h8a1 1 0 001-1l1-13M10 11v6M14 11v6" />
+  </svg>
+)
+export const IconSort = (p) => (
+  <svg {...ic} {...p}>
+    <path d="M7 4v16M7 20l-3-3M7 4l3 3M17 20V4M17 4l3 3M17 20l-3-3" />
+  </svg>
+)

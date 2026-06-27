@@ -123,8 +123,8 @@ export async function moveToClosed(input) {
   }
   if (!IS_LIVE) {
     await delay()
-    const p = mock.potential.find((r) => r['Client ID'] === input.clientId)
-    if (p) p.Status = 'Completed'
+    // Remove from Potential — a closed deal no longer belongs on the page.
+    mock.potential = mock.potential.filter((r) => r['Client ID'] !== input.clientId)
     const rec = {
       row: nextRow(mock.closed),
       'Client Name': payload.clientName,
@@ -141,6 +141,19 @@ export async function moveToClosed(input) {
   }
   const data = await post(payload)
   return data.row
+}
+
+// Permanently delete a prospect from the database by Client ID. Used to clear
+// out canceled deals the team no longer wants to keep.
+export async function deleteDeal(input) {
+  const payload = { action: 'deleteDeal', clientId: input.clientId }
+  if (!IS_LIVE) {
+    await delay()
+    mock.potential = mock.potential.filter((r) => r['Client ID'] !== input.clientId)
+    return { deleted: true }
+  }
+  const data = await post(payload)
+  return data.result || { deleted: true }
 }
 
 // Used by the public brief form. Never throws into the user's face — the form

@@ -8,6 +8,10 @@ import { useI18n } from '../i18n/context.jsx'
 const CLOSE_RATE = 0.35 // share of missed leads that would have booked
 const RECOVERY = 0.8 // share of that lost revenue Lucrator typically wins back
 
+// Currencies visitors can pick. Amounts aren't FX-converted — the figure simply
+// renders in the chosen currency (the visitor enters numbers in their own money).
+const CURRENCIES = ['USD', 'SAR', 'AED', 'EUR', 'GBP', 'EGP', 'CAD', 'AUD']
+
 function Slider({ label, value, min, max, step, onChange, display }) {
   return (
     <div>
@@ -37,15 +41,17 @@ export default function CalculatorSection() {
   const [leads, setLeads] = useState(80)
   const [value, setValue] = useState(450)
   const [missedPct, setMissedPct] = useState(30)
+  // Currency the visitor chooses; seeded from the active language.
+  const [currency, setCurrency] = useState(lang === 'ar' ? 'SAR' : 'USD')
 
   const fmtMoney = useMemo(
     () =>
       new Intl.NumberFormat(lang === 'ar' ? 'ar-SA' : 'en-US', {
         style: 'currency',
-        currency: lang === 'ar' ? 'SAR' : 'USD',
+        currency,
         maximumFractionDigits: 0,
       }),
-    [lang],
+    [lang, currency],
   )
   const fmtNum = useMemo(
     () => new Intl.NumberFormat(lang === 'ar' ? 'ar-SA' : 'en-US'),
@@ -68,6 +74,25 @@ export default function CalculatorSection() {
           <div className="grid gap-6 overflow-hidden rounded-3xl border border-line bg-surface shadow-soft md:grid-cols-2">
             {/* Controls */}
             <div className="flex flex-col gap-8 p-7 sm:p-9">
+              {/* Currency picker — visitors choose how the figures are shown. */}
+              <div className="flex items-center justify-between gap-3">
+                <label htmlFor="calc-currency" className="text-sm font-medium text-ink-soft">
+                  {c.currencyLabel}
+                </label>
+                <select
+                  id="calc-currency"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  dir="ltr"
+                  className="rounded-lg border border-line-strong bg-surface px-3 py-1.5 text-sm font-semibold text-ink transition-colors focus:border-clay focus:outline-none focus:ring-2 focus:ring-clay/20"
+                >
+                  {CURRENCIES.map((code) => (
+                    <option key={code} value={code}>
+                      {code}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Slider
                 label={c.leadsLabel}
                 value={leads}
