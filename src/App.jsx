@@ -11,6 +11,7 @@ import CTASection from './components/CTASection.jsx'
 import FAQSection from './components/FAQSection.jsx'
 import ContactForm from './components/ContactForm.jsx'
 import Footer from './components/Footer.jsx'
+import ChatWidget from './components/chatbot/ChatWidget.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 
 // Minimal zero-dependency hash routing. The marketing site is the default;
@@ -25,6 +26,10 @@ function useIsAdmin() {
   const hash = useSyncExternalStore(subscribe, getHash, () => '')
   return hash.replace(/^#/, '').startsWith('/admin')
 }
+
+// The FAQ chatbot is OFF by default — it stays hidden from visitors until a
+// working API key is wired up. Flip it on by building with VITE_ENABLE_CHATBOT=true.
+const CHATBOT_ENABLED = import.meta.env.VITE_ENABLE_CHATBOT === 'true'
 
 export default function App() {
   const isAdmin = useIsAdmin()
@@ -46,6 +51,7 @@ export default function App() {
         <ContactForm />
       </main>
       <Footer />
+      {CHATBOT_ENABLED && <ChatWidget />}
     </div>
   )
 }

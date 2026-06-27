@@ -319,6 +319,26 @@ export const translations = {
       startLead: 'Ready to stop losing leads?',
       rights: 'All rights reserved.',
     },
+    chatbot: {
+      launcher: 'Questions? Ask us',
+      title: 'Lucri — FAQ assistant',
+      subtitle: 'Answers about what you get. Not a salesperson.',
+      greeting:
+        "Hi — I'm Lucri. Ask me what Lucrator includes, or get a quick estimate of the revenue you're losing to missed leads.",
+      placeholder: 'Ask a question…',
+      send: 'Send',
+      thinking: 'Typing…',
+      remaining: (n) => `${n} ${n === 1 ? 'question' : 'questions'} left`,
+      disclaimer: 'Lucri answers product FAQs only — no pricing.',
+      error: 'Something went wrong. Please try again.',
+      suggestions: ['What do I actually get?', 'How much am I losing to missed leads?', 'Which industries is this for?'],
+      limitTitle: "That's the last question here",
+      limitBody:
+        "You've used your free questions. For anything more specific, book a free audit or browse the full FAQ — both go deeper than I can here.",
+      bookAudit: 'Book a free audit',
+      viewFaq: 'View FAQ page',
+      close: 'Close chat',
+    },
   },
 
   ar: {
@@ -625,6 +645,26 @@ export const translations = {
       startHeading: 'ابدأ الآن',
       startLead: 'جاهز لإيقاف خسارة العملاء؟',
       rights: 'جميع الحقوق محفوظة.',
+    },
+    chatbot: {
+      launcher: 'لديك سؤال؟ اسألنا',
+      title: 'Lucri — مساعد الأسئلة الشائعة',
+      subtitle: 'إجابات عمّا تحصل عليه. لست مندوب مبيعات.',
+      greeting:
+        'مرحبًا — أنا Lucri. اسألني عمّا يتضمّنه Lucrator، أو احصل على تقدير سريع للأرباح التي تخسرها بسبب العملاء الفائتين.',
+      placeholder: 'اكتب سؤالك…',
+      send: 'إرسال',
+      thinking: 'يكتب…',
+      remaining: (n) => `بقي ${n} ${n === 1 ? 'سؤال' : 'أسئلة'}`,
+      disclaimer: 'يجيب Lucri عن أسئلة المنتج فقط — بدون أسعار.',
+      error: 'حدث خطأ ما. حاول مرة أخرى.',
+      suggestions: ['ماذا أحصل عليه فعليًا؟', 'كم أخسر بسبب العملاء الفائتين؟', 'لأي القطاعات هذا النظام؟'],
+      limitTitle: 'هذا آخر سؤال هنا',
+      limitBody:
+        'لقد استخدمت أسئلتك المجانية. لأي تفاصيل أكثر، احجز تدقيقًا مجانيًا أو تصفّح صفحة الأسئلة الشائعة — كلاهما أعمق ممّا أستطيع تقديمه هنا.',
+      bookAudit: 'احجز تدقيقًا مجانيًا',
+      viewFaq: 'صفحة الأسئلة الشائعة',
+      close: 'إغلاق المحادثة',
     },
   },
 }

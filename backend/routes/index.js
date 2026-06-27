@@ -5,9 +5,11 @@
 
 import { Router } from 'express';
 import metaRoutes from './metaRoutes.js';
+import chatbotRoutes from './chatbotRoutes.js';
 
 const router = Router();
 
 router.use('/meta', metaRoutes);
+router.use('/chatbot', chatbotRoutes);
 
 export default router;

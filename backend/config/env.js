@@ -33,6 +33,30 @@ const env = {
   // only) — see middleware/apiKeyAuth.js, which fails closed in production.
   apiKey: read('API_KEY'),
 
+  // Number of proxies in front of the app (Render/Vercel/etc. set X-Forwarded-For).
+  // Used by Express `trust proxy` so per-IP rate limiting sees the real client IP.
+  // Default 1 in production (one proxy), 0 locally.
+  trustProxy: Number(read('TRUST_PROXY', read('NODE_ENV', 'development') === 'production' ? '1' : '0')),
+
+  // FAQ chatbot (public widget on the marketing site). Powered by OpenRouter
+  // (OpenAI-compatible API that proxies to many models, including Claude).
+  chatbot: {
+    // OpenRouter API key — server-side only, never exposed to the browser.
+    apiKey: read('OPENROUTER_API_KEY'),
+    // OpenRouter base URL (override only if self-hosting a proxy).
+    baseUrl: read('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
+    // Model slug. Haiku is plenty for a scripted FAQ bot and is among the
+    // cheapest/fastest — browse openrouter.ai/models for other slugs.
+    model: read('CHATBOT_MODEL', 'anthropic/claude-haiku-4.5'),
+    // Optional attribution headers OpenRouter uses for its rankings page.
+    siteUrl: read('OPENROUTER_SITE_URL', read('PRODUCTION_FRONTEND_URL', '')),
+    appName: read('OPENROUTER_APP_NAME', 'Lucrator FAQ Bot'),
+    // Hard cap on questions per visitor IP before we steer them to a free audit.
+    questionLimit: Number(read('CHATBOT_QUESTION_LIMIT', '5')),
+    // Window the per-IP cap resets over (ms). Default 24h.
+    windowMs: Number(read('CHATBOT_WINDOW_MS', String(24 * 60 * 60 * 1000))),
+  },
+
   // Meta / Graph API
   meta: {
     userAccessToken: read('META_USER_ACCESS_TOKEN'),

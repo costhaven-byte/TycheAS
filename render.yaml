@@ -34,6 +34,9 @@ services:
         sync: false
       - key: API_KEY
         sync: false
+      # OpenRouter key powering the public FAQ chatbot (server-side only).
+      - key: OPENROUTER_API_KEY
+        sync: false
       - key: AUTO_REPLY_ENABLED
         value: "true"
       - key: AUTO_REPLY_MESSAGE

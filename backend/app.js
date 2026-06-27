@@ -15,6 +15,10 @@ import logger from './utils/logger.js';
 
 const app = express();
 
+// Behind a proxy (Render/Vercel), trust X-Forwarded-For so req.ip is the real
+// client IP — the per-IP chatbot cap depends on this.
+app.set('trust proxy', env.trustProxy);
+
 // Security headers.
 app.use(helmet());
 

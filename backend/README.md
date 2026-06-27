@@ -71,6 +71,12 @@ Server boots on `http://localhost:5000`. The health endpoint works even if Meta 
 | `FACEBOOK_PAGE_ACCESS_TOKEN` | no | Page token (needed for DMs; recommended for FB publishing) |
 | `GRAPH_API_BASE_URL` | no | Override Graph host |
 | `GRAPH_API_VERSION` | no (default v21.0) | Graph API version |
+| `OPENROUTER_API_KEY` | for chatbot | Powers the public FAQ chatbot via OpenRouter (server-side only) |
+| `CHATBOT_MODEL` | no (default `anthropic/claude-3.5-haiku`) | OpenRouter model slug used to answer FAQ questions |
+| `OPENROUTER_BASE_URL` | no | Override the OpenRouter API base URL |
+| `CHATBOT_QUESTION_LIMIT` | no (default 5) | Questions allowed per visitor IP before steering to a free audit |
+| `CHATBOT_WINDOW_MS` | no (default 24h) | Window the per-IP question cap resets over |
+| `TRUST_PROXY` | no (default 1 in prod) | Proxies in front of the app, so per-IP limiting sees the real client IP |
 
 > **Security:** `.env` is gitignored. Tokens and the app secret are never returned to the frontend and are redacted from all logs and error responses.
 
@@ -123,7 +129,31 @@ Error (clean, secret-free):
 
 ## Endpoints
 
-Base path: `/api/meta`
+### FAQ chatbot — `/api/chatbot`
+
+Public (no API key): called directly from the browser. Access is bounded by CORS,
+the global rate limit, and a **per-IP question cap** (`CHATBOT_QUESTION_LIMIT`,
+default 5). The bot is strictly an FAQ assistant — it only describes what a
+customer *gets* and helps with the visitor's own lead/revenue math; it never
+discusses pricing or how the business is run (enforced by the system prompt in
+`services/chatbot/systemPrompt.js`).
+
+`POST /api/chatbot/ask`
+```bash
+curl -X POST http://localhost:5000/api/chatbot/ask \
+  -H "Content-Type: application/json" \
+  -d '{"lang":"en","messages":[{"role":"user","content":"What do I get?"}]}'
+```
+```json
+{ "success": true, "data": { "reply": "…", "limitReached": false, "questionsRemaining": 4 } }
+```
+Once the IP hits the cap, every further call returns `limitReached: true` with a
+canned message pointing to the free audit / FAQ page — no more answers.
+
+`GET /api/chatbot/health` reports whether `OPENROUTER_API_KEY` is configured and the
+current question limit.
+
+### Meta — `/api/meta`
 
 ### `GET /api/meta/health`
 **Purpose:** Backend liveness check (no Meta call).

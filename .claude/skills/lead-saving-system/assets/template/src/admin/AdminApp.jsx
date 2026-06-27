@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { listDeals, addProspect, moveToClosed, updateDeal, deleteDeal } from './api.js'
-import { ADMIN_PASSWORD, IS_LIVE } from './config.js'
+import { BRAND, SESSION_KEY, ADMIN_PASSWORD, IS_LIVE } from './config.js'
 import StatCards from './components/StatCards.jsx'
 import DealsTable from './components/DealsTable.jsx'
 import Calendar from './components/Calendar.jsx'
@@ -11,7 +11,6 @@ import AddProspectModal from './components/AddProspectModal.jsx'
 import MoveToClosedModal from './components/MoveToClosedModal.jsx'
 import DealStatusModal from './components/DealStatusModal.jsx'
 import DeleteDealModal from './components/DeleteDealModal.jsx'
-import Outreach from './components/Outreach.jsx'
 import {
   AdminButton,
   IconPlus,
@@ -22,19 +21,10 @@ import {
   IconLock,
 } from './components/shared.jsx'
 
-const SESSION_KEY = 'lucrator_admin_ok'
-
-const IconOutreach = (p) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" {...p}>
-    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-  </svg>
-)
-
 const VIEWS = [
-  { id: 'potential',  label: 'Potential', Icon: IconTable },
-  { id: 'closed',     label: 'Closed',    Icon: IconCheckCircle },
-  { id: 'calendar',   label: 'Calendar',  Icon: IconCalendar },
-  { id: 'outreach',   label: 'Outreach',  Icon: IconOutreach },
+  { id: 'potential', label: 'Potential', Icon: IconTable },
+  { id: 'closed', label: 'Closed', Icon: IconCheckCircle },
+  { id: 'calendar', label: 'Calendar', Icon: IconCalendar },
 ]
 
 // ---- Gate -------------------------------------------------------------------
@@ -63,7 +53,7 @@ function Gate({ onUnlock }) {
         <span className="grid h-12 w-12 place-items-center rounded-2xl bg-clay-tint text-clay-ink">
           <IconLock className="h-6 w-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold text-ink">Lucrator Admin</h1>
+        <h1 className="mt-5 text-2xl font-bold text-ink">{BRAND.name} Admin</h1>
         <p className="mt-1.5 text-sm text-ink-soft">Enter the dashboard password to continue.</p>
         <input
           type="password"
@@ -210,10 +200,12 @@ export default function AdminApp() {
       <header className="sticky top-0 z-sticky border-b border-line bg-bg/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-clay text-sm font-bold text-white">L</span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-clay text-sm font-bold text-white">
+              {BRAND.initial}
+            </span>
             <div className="leading-tight">
-              <div className="text-sm font-bold text-ink">Lucrator</div>
-              <div className="text-xs text-muted">Pipeline</div>
+              <div className="text-sm font-bold text-ink">{BRAND.name}</div>
+              <div className="text-xs text-muted">{BRAND.tagline}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -240,7 +232,7 @@ export default function AdminApp() {
           <div>
             <h1 className="text-2xl font-bold text-ink sm:text-[1.75rem]">Sales pipeline</h1>
             <p className="mt-1 text-sm text-ink-soft">
-              Inbound briefs land in Potential automatically. Add outside prospects and close deals here.
+              Inbound leads land in Potential automatically. Add outside prospects and close deals here.
             </p>
           </div>
           <AdminButton onClick={() => setAddOpen(true)}>
@@ -297,9 +289,7 @@ export default function AdminApp() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.18 }}
           >
-            {view === 'outreach' ? (
-              <Outreach />
-            ) : loading ? (
+            {loading ? (
               view === 'calendar' ? (
                 <div className="h-96 animate-pulse rounded-3xl border border-line bg-surface" />
               ) : (
