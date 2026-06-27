@@ -1,0 +1,38 @@
+# Render Blueprint for the Lucrator backend.
+# Deploy: push this repo to GitHub, then in Render → New → Blueprint, pick the repo.
+# Render reads this file, creates the web service, and prompts for the secret
+# values marked `sync: false` (so secrets are never committed).
+services:
+  - type: web
+    name: lucrator-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/meta/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Public URL of the frontend (for CORS). Update if your domain changes.
+      - key: PRODUCTION_FRONTEND_URL
+        value: https://lucrator.vercel.app
+      - key: FRONTEND_URL
+        value: https://lucrator.vercel.app
+      # Secrets — entered in the Render dashboard, NOT stored in git.
+      - key: META_USER_ACCESS_TOKEN
+        sync: false
+      - key: META_APP_ID
+        sync: false
+      - key: META_APP_SECRET
+        sync: false
+      - key: INSTAGRAM_ACCOUNT_ID
+        sync: false
+      - key: FACEBOOK_PAGE_ID
+        sync: false
+      - key: WEBHOOK_VERIFY_TOKEN
+        sync: false
+      - key: AUTO_REPLY_ENABLED
+        value: "true"
+      - key: AUTO_REPLY_MESSAGE
+        value: "Hi 👋 Thanks for reaching out! Learn more at https://lucrator.vercel.app"
