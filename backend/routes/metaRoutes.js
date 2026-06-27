@@ -8,18 +8,24 @@ import * as webhook from '../controllers/webhookController.js';
 import { validate } from '../middleware/validate.js';
 import { writeLimiter } from '../middleware/rateLimiter.js';
 import { verifyMetaSignature } from '../middleware/verifySignature.js';
+import { apiKeyAuth } from '../middleware/apiKeyAuth.js';
 
 const router = Router();
 
-// ── Health & diagnostics ──
+// ── PUBLIC routes (no API key) ──
+// Health is an open liveness probe. The Meta webhook is called BY Meta (which
+// can't send our API key) and is secured separately: GET by the verify token,
+// POST by the X-Hub-Signature-256 signature.
 router.get('/health', meta.health);
-router.get('/test', meta.test);
-
-// ── Webhooks (Meta event delivery) ──
-// GET  = verification handshake; POST = signed event delivery.
 router.get('/webhook', webhook.verifyWebhook);
 router.post('/webhook', verifyMetaSignature, webhook.receiveWebhook);
-// Debug: view recently received events (no secrets).
+
+// ── Everything below requires a valid x-api-key header ──
+router.use(apiKeyAuth);
+
+// Diagnostics (reveals account info — protected).
+router.get('/test', meta.test);
+// Debug: view recently received events (may contain DM text — protected).
 router.get('/webhook/events', (_req, res) =>
   res.json({ success: true, data: webhook.getRecentEvents() })
 );

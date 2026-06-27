@@ -76,6 +76,28 @@ Server boots on `http://localhost:5000`. The health endpoint works even if Meta 
 
 ---
 
+## Authentication
+
+All endpoints require an API key **except** `GET /api/meta/health` and the Meta
+`GET/POST /api/meta/webhook` (which Meta calls directly and which are secured by
+the verify token + request signature).
+
+Send the key on every request:
+
+```
+x-api-key: <API_KEY>
+```
+(or `Authorization: Bearer <API_KEY>`)
+
+Set `API_KEY` in `.env`. **In production the API refuses to serve protected
+routes if `API_KEY` is unset** (fails closed). CORS is *not* a substitute — it
+only constrains browsers, so the API key is the real access control. Missing or
+wrong key → `401 UNAUTHORIZED`.
+
+```bash
+curl -H "x-api-key: $API_KEY" http://localhost:5000/api/meta/instagram/profile
+```
+
 ## Response format
 
 Success:
@@ -373,8 +395,9 @@ After this, inbound DMs/comments arrive at `POST /api/meta/webhook` in real time
 
 ## Security summary
 
+- **API-key auth** (`x-api-key`) on all sensitive endpoints; fails closed in production.
 - `.env` gitignored; secrets never committed.
-- CORS restricted to `FRONTEND_URL` / `PRODUCTION_FRONTEND_URL`.
+- CORS restricted to `FRONTEND_URL` / `PRODUCTION_FRONTEND_URL` (defense in depth, not the primary control — the API key is).
 - Helmet security headers.
 - Global rate limit (300 req / 15 min per IP) + stricter write limit (20 req / min) on publish/reply.
 - Per-route request validation.

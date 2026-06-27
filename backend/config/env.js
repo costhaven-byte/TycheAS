@@ -28,6 +28,11 @@ const env = {
   frontendUrl: read('FRONTEND_URL', 'http://localhost:5173'),
   productionFrontendUrl: read('PRODUCTION_FRONTEND_URL'),
 
+  // API key that protects the backend's own endpoints. The frontend must send
+  // it as the `x-api-key` header. Without it set, the API is unprotected (dev
+  // only) — see middleware/apiKeyAuth.js, which fails closed in production.
+  apiKey: read('API_KEY'),
+
   // Meta / Graph API
   meta: {
     userAccessToken: read('META_USER_ACCESS_TOKEN'),
