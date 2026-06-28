@@ -99,7 +99,7 @@ export default function ChatWidget() {
 
     try {
       const data = await askChatbot(next, lang)
-      setMessages((m) => [...m, { role: 'assistant', content: data.reply }])
+      setMessages((m) => [...m, { role: 'assistant', content: data.reply, actions: data.actions || [] }])
       if (typeof data.questionsRemaining === 'number') setRemaining(data.questionsRemaining)
       if (data.limitReached) setLimited(true)
     } catch {
@@ -149,9 +149,20 @@ export default function ChatWidget() {
         <Bubble role="assistant">{c.greeting}</Bubble>
 
         {messages.map((m, i) => (
-          <Bubble key={i} role={m.role}>
-            {m.content}
-          </Bubble>
+          <div key={i} className="flex flex-col gap-1.5">
+            <Bubble role={m.role}>{m.content}</Bubble>
+            {/* Confirmations for anything the agent actually booked or sold. */}
+            {m.actions?.map((a, j) => (
+              <div
+                key={j}
+                className="self-start rounded-xl border border-win/30 bg-win-tint/50 px-3 py-1.5 text-xs font-semibold text-win"
+              >
+                {a.type === 'sale'
+                  ? c.sold(a.package)
+                  : c.booked(a.date)}
+              </div>
+            ))}
+          </div>
         ))}
 
         {loading && (

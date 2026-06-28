@@ -17,7 +17,9 @@ missed leads, slow replies, and slow quotes.
 Lucrator is a CRM for local service businesses. The core product is the system
 of record for leads and customers: a live pipeline, hot/warm/cold scoring, status
 tracking, and an analytics dashboard — so no lead slips through. Optional growth
-modules bolt straight onto the pipeline: a 24/7 chatbot, a follow-up & reviews
+modules bolt straight onto the pipeline: a 24/7 chatbot (which now also acts as a
+booking & buying agent — it drops appointments onto the calendar and logs sales to
+the pipeline as part of the same chatbot package), a follow-up & reviews
 engine (with direct links to Google, Facebook, and others), a quote assistant, an
 appointment manager, and a landing page. The Growth Engine bundle packages every
 module together with 24/7 priority support, increased chatbot limits, and a

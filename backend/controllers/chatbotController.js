@@ -13,6 +13,8 @@ export const health = (_req, res) => {
     data: {
       service: 'chatbot',
       configured: chatbot.isConfigured(),
+      // True when the booking/buying agent can actually write to the calendar.
+      agentEnabled: chatbot.agentEnabled(),
       questionLimit: env.chatbot.questionLimit,
     },
   });
@@ -20,7 +22,7 @@ export const health = (_req, res) => {
 
 export const ask = asyncHandler(async (req, res) => {
   const { messages, lang } = req.body;
-  const reply = await chatbot.ask({ messages, lang });
+  const { reply, actions } = await chatbot.ask({ messages, lang });
 
   // express-rate-limit populates req.rateLimit on the chatLimiter'd route.
   const remaining = typeof req.rateLimit?.remaining === 'number' ? req.rateLimit.remaining : null;
@@ -29,6 +31,8 @@ export const ask = asyncHandler(async (req, res) => {
     success: true,
     data: {
       reply,
+      // Bookings/sales the agent actually landed this turn (for the UI to confirm).
+      actions: actions || [],
       limitReached: remaining === 0,
       questionsRemaining: remaining,
     },

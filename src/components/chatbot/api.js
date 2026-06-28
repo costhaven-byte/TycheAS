@@ -7,10 +7,11 @@
 const BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '')
 
 /**
- * Ask the FAQ bot a question.
+ * Ask the assistant. Besides answering, the bot may book an appointment or record
+ * a sale — those land in `actions`, which the widget surfaces as a confirmation.
  * @param {Array<{role:'user'|'assistant', content:string}>} messages  full history, oldest first
  * @param {'en'|'ar'} lang
- * @returns {Promise<{reply:string, limitReached:boolean, questionsRemaining:number|null}>}
+ * @returns {Promise<{reply:string, actions:Array<object>, limitReached:boolean, questionsRemaining:number|null}>}
  */
 export async function askChatbot(messages, lang) {
   const res = await fetch(`${BASE}/api/chatbot/ask`, {

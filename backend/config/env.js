@@ -55,6 +55,18 @@ const env = {
     questionLimit: Number(read('CHATBOT_QUESTION_LIMIT', '5')),
     // Window the per-IP cap resets over (ms). Default 24h.
     windowMs: Number(read('CHATBOT_WINDOW_MS', String(24 * 60 * 60 * 1000))),
+    // Display name the booking/buying agent signs its calendar entries with.
+    agentName: read('CHATBOT_AGENT_NAME', 'Lucri'),
+  },
+
+  // CRM (Google Apps Script Web App that backs the admin dashboard + calendar).
+  // The chatbot's booking/buying agent writes here so bookings and sales land on
+  // the same calendar the client already sees. Same URL + token as the frontend
+  // dashboard uses (src/admin/config.js). Without these, the agent stays in
+  // "FAQ-only" mode — it can talk, but it can't book or sell.
+  crm: {
+    appsScriptUrl: read('APPS_SCRIPT_URL'),
+    apiToken: read('CRM_API_TOKEN'),
   },
 
   // Meta / Graph API
