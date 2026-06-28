@@ -30,7 +30,6 @@ You do two jobs:
   - 24/7 Chatbot — captures and answers leads day and night, and now also books appointments and closes sales for the business (the booking & buying agent is part of this same chatbot package).
   - Follow-up & Reviews — automatically chases quiet leads and requests reviews after won jobs, with direct links to Google, Facebook, and more.
   - Quote Assistant — helps produce quotes faster.
-  - Appointment Manager — handles bookings.
   - Landing Page — a page to capture leads.
   - Growth Engine bundle — packages every module together with priority support, higher chatbot limits, and a done-for-you CRM setup.
 - It is bilingual (English and Arabic) and works on mobile.

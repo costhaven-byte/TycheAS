@@ -8,7 +8,6 @@ export const HELP_VALUES = [
   '24/7 Chatbot',
   'Follow-up & Reviews',
   'Quote Assistant',
-  'Appointment Manager',
   'Landing Page',
   'Not sure yet',
 ]
@@ -162,17 +161,6 @@ export const translations = {
           bestFor: 'HVAC, mechanics, catering, contractors, home services.',
         },
         {
-          name: 'Appointment Manager',
-          tagline: 'Bookings and reminders, handled.',
-          includes: [
-            'Online booking synced to your calendar',
-            'Automated reminders that cut no-shows',
-            'Easy reschedule & cancel links',
-            'Every booking tracked in the pipeline',
-          ],
-          bestFor: 'Clinics, salons, spas, restaurants, appointment-based businesses.',
-        },
-        {
           name: 'Landing Page',
           tagline: 'A page built to convert.',
           includes: [
@@ -216,8 +204,8 @@ export const translations = {
         { name: 'HVAC', systems: ['CRM', 'Quote Assistant', 'Follow-up'] },
         { name: 'Mechanics', systems: ['CRM', 'Quote Assistant', 'Chatbot'] },
         { name: 'Catering', systems: ['CRM', 'Quote Assistant', 'Landing Page'] },
-        { name: 'Clinics / Spas / Salons', systems: ['CRM', 'Appointments', 'Reminders'] },
-        { name: 'Restaurants', systems: ['CRM', 'Appointments', 'Chatbot'] },
+        { name: 'Clinics / Spas / Salons', systems: ['CRM', 'Chatbot', 'Reminders'] },
+        { name: 'Restaurants', systems: ['CRM', 'Chatbot', 'Follow-up'] },
         { name: 'Real Estate', systems: ['CRM', 'Chatbot', 'Follow-up'] },
         { name: 'Contractors / Home Services', systems: ['CRM', 'Quote Assistant', 'Reviews'] },
       ],
@@ -263,7 +251,7 @@ export const translations = {
       items: [
         { q: 'Is this just another CRM?', a: 'It’s a CRM built for how local service businesses actually work — a live pipeline, hot/warm/cold scoring, and a dashboard, with no bloat. Then you add only the growth modules you need: chat, follow-ups, quotes, or bookings.' },
         { q: 'Can this work for my industry?', a: 'Yes — especially if your business gets inquiries, bookings, quote requests, or customer questions. We tune the pipeline and growth modules to how your customers actually reach out.' },
-        { q: 'Do I have to use the growth modules?', a: 'No. The CRM works on its own. Growth modules like the chatbot, follow-up & reviews, quote assistant, and appointment manager are optional — turn on what helps, skip the rest. Or take the Growth Engine to get them all at once.' },
+        { q: 'Do I have to use the growth modules?', a: 'No. The CRM works on its own. Growth modules like the chatbot (which also books appointments and closes sales), follow-up & reviews, and quote assistant are optional — turn on what helps, skip the rest. Or take the Growth Engine to get them all at once.' },
         { q: 'Can it follow up and ask for reviews?', a: 'Yes, with the Follow-up & Reviews module. It chases quiet leads automatically and sends review requests after won jobs, with direct links to Google, Facebook, and more.' },
         { q: 'Can I move my existing leads in?', a: 'Yes. We help you import current leads and customers during setup, so your whole pipeline lives in one place from day one.' },
         { q: 'How do we start?', a: 'Start with a free audit. We review your business, find where leads are leaking, and recommend the right CRM setup and growth modules — no obligation.' },
@@ -293,7 +281,7 @@ export const translations = {
         help: 'Select an option',
         message: 'Tell us a little about your business and where you’re losing leads…',
       },
-      helpOptions: ['Lucrator CRM', '24/7 Chatbot', 'Follow-up & Reviews', 'Quote Assistant', 'Appointment Manager', 'Landing Page', 'Not sure yet'],
+      helpOptions: ['Lucrator CRM', '24/7 Chatbot', 'Follow-up & Reviews', 'Quote Assistant', 'Landing Page', 'Not sure yet'],
       submit: 'Book free audit',
       disclaimer: 'We’ll only use your details to prepare your audit. No spam.',
       errors: {
@@ -492,17 +480,6 @@ export const translations = {
           bestFor: 'التكييف، الميكانيكا، التموين، المقاولون، الخدمات المنزلية.',
         },
         {
-          name: 'مدير المواعيد',
-          tagline: 'الحجوزات والتذكيرات تُدار عنك.',
-          includes: [
-            'حجز عبر الإنترنت مزامَن مع تقويمك',
-            'تذكيرات تلقائية تقلّل الغياب',
-            'روابط سهلة لإعادة الجدولة والإلغاء',
-            'كل حجز متابَع في المسار',
-          ],
-          bestFor: 'العيادات، الصالونات، المنتجعات، المطاعم والأعمال القائمة على المواعيد.',
-        },
-        {
           name: 'صفحة هبوط',
           tagline: 'صفحة مبنية للتحويل.',
           includes: [
@@ -546,8 +523,8 @@ export const translations = {
         { name: 'التكييف', systems: ['النظام', 'مساعد التسعير', 'متابعة'] },
         { name: 'ميكانيكا السيارات', systems: ['النظام', 'مساعد التسعير', 'روبوت محادثة'] },
         { name: 'التموين', systems: ['النظام', 'مساعد التسعير', 'صفحة هبوط'] },
-        { name: 'العيادات / المنتجعات / الصالونات', systems: ['النظام', 'المواعيد', 'تذكيرات'] },
-        { name: 'المطاعم', systems: ['النظام', 'المواعيد', 'روبوت محادثة'] },
+        { name: 'العيادات / المنتجعات / الصالونات', systems: ['النظام', 'روبوت محادثة', 'تذكيرات'] },
+        { name: 'المطاعم', systems: ['النظام', 'روبوت محادثة', 'متابعة'] },
         { name: 'العقارات', systems: ['النظام', 'روبوت محادثة', 'متابعة'] },
         { name: 'المقاولون / الخدمات المنزلية', systems: ['النظام', 'مساعد التسعير', 'تقييمات'] },
       ],
@@ -593,7 +570,7 @@ export const translations = {
       items: [
         { q: 'هل هذا مجرد نظام إدارة عملاء آخر؟', a: 'إنه نظام إدارة عملاء مبني على طريقة عمل الأعمال المحلية فعلًا — مسار مباشر، وتصنيف ساخن/دافئ/بارد، ولوحة تحليلات، بلا تعقيد. ثم تضيف ما تحتاجه فقط: محادثة، أو متابعة، أو تسعير، أو حجوزات.' },
         { q: 'هل يصلح هذا لقطاعي؟', a: 'نعم — خصوصًا إذا كان عملك يستقبل استفسارات أو حجوزات أو طلبات تسعير أو أسئلة. نضبط المسار ووحدات النمو حسب طريقة تواصل عملائك.' },
-        { q: 'هل يجب أن أستخدم وحدات النمو؟', a: 'لا. النظام يعمل بمفرده. وحدات النمو مثل روبوت المحادثة، والمتابعة والتقييمات، ومساعد التسعير، ومدير المواعيد اختيارية — فعّل ما يفيدك واترك الباقي.' },
+        { q: 'هل يجب أن أستخدم وحدات النمو؟', a: 'لا. النظام يعمل بمفرده. وحدات النمو مثل روبوت المحادثة (الذي يحجز المواعيد ويُتمّ المبيعات أيضًا)، والمتابعة والتقييمات، ومساعد التسعير اختيارية — فعّل ما يفيدك واترك الباقي.' },
         { q: 'هل يمكنه المتابعة وطلب التقييمات؟', a: 'نعم، مع وحدة «المتابعة والتقييمات». تلاحق العملاء الصامتين تلقائيًا وترسل طلبات تقييم بعد الصفقات المكسوبة، بروابط مباشرة إلى Google وFacebook وغيرها.' },
         { q: 'هل يمكنني نقل عملائي الحاليين؟', a: 'نعم. نساعدك على استيراد عملائك الحاليين أثناء الإعداد، ليكون مسارك كاملًا في مكان واحد من اليوم الأول.' },
         { q: 'كيف نبدأ؟', a: 'ابدأ بتدقيق مجاني. نراجع عملك، ونحدّد أين يتسرّب العملاء، ونوصي بإعداد النظام ووحدات النمو المناسبة — بلا التزام.' },
@@ -623,7 +600,7 @@ export const translations = {
         help: 'اختر خيارًا',
         message: 'أخبرنا قليلًا عن عملك وأين تخسر العملاء…',
       },
-      helpOptions: ['نظام Lucrator', 'روبوت محادثة ٢٤/٧', 'المتابعة والتقييمات', 'مساعد التسعير', 'مدير المواعيد', 'صفحة هبوط', 'لست متأكدًا بعد'],
+      helpOptions: ['نظام Lucrator', 'روبوت محادثة ٢٤/٧', 'المتابعة والتقييمات', 'مساعد التسعير', 'صفحة هبوط', 'لست متأكدًا بعد'],
       submit: 'احجز تدقيقًا مجانيًا',
       disclaimer: 'نستخدم بياناتك فقط لإعداد تدقيقك. بلا إزعاج.',
       errors: {

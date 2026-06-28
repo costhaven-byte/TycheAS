@@ -20,8 +20,8 @@ tracking, and an analytics dashboard — so no lead slips through. Optional grow
 modules bolt straight onto the pipeline: a 24/7 chatbot (which now also acts as a
 booking & buying agent — it drops appointments onto the calendar and logs sales to
 the pipeline as part of the same chatbot package), a follow-up & reviews
-engine (with direct links to Google, Facebook, and others), a quote assistant, an
-appointment manager, and a landing page. The Growth Engine bundle packages every
+engine (with direct links to Google, Facebook, and others), a quote assistant,
+and a landing page. The Growth Engine bundle packages every
 module together with 24/7 priority support, increased chatbot limits, and a
 done-for-you custom CRM setup — sold as the best-value, most-bought option. The
 site's job is to make a skeptical owner think "this is real, this would make me
