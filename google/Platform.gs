@@ -51,6 +51,26 @@ var CLIENT_TABS = {
   },
 };
 
+// A key/value tab seeded into each client sheet. This is the chatbot's "brain":
+// the client edits these cells to change how their bot talks, what it offers, and
+// what it answers — no redeploy. The backend reads it via getConfig.
+var CONFIG_TAB = { name: 'Config', headers: ['Key', 'Value'] };
+
+function defaultConfig(name, industry) {
+  var biz = name || 'the business';
+  var ind = industry || 'local service';
+  return [
+    ['Business name', biz],
+    ['About', biz + ' is a ' + ind + ' business. (Edit this to describe what you do.)'],
+    ['Services', 'List your services here, comma-separated'],
+    ['Booking types', 'Appointment'],
+    ['Languages', 'en,ar'],
+    ['Tone', 'Friendly, warm, and professional'],
+    ['Booking confirmation', "Great — you're booked! We'll see you then."],
+    ['FAQ', 'Q: Where are you located? A: (your address)\nQ: What are your hours? A: (your hours)'],
+  ];
+}
+
 // ── One-time setup ──────────────────────────────────────────────────────────
 
 /** Run ONCE from the editor. Creates the master registry + ADMIN token. */
@@ -117,6 +137,8 @@ function handle(p) {
         return json({ ok: true, clients: listClients() });
       case 'list':
         return json({ ok: true, leads: readTab(p.clientId, 'leads'), bookings: readTab(p.clientId, 'bookings'), sales: readTab(p.clientId, 'sales') });
+      case 'getConfig':
+        return json({ ok: true, config: getConfig(p.clientId) });
       case 'addLead':
         return json({ ok: true, row: addLead(p) });
       case 'addBooking':
@@ -125,6 +147,8 @@ function handle(p) {
         return json({ ok: true, row: recordSale(p) });
       case 'updateLead':
         return json({ ok: true, row: updateLead(p) });
+      case 'updateBooking':
+        return json({ ok: true, row: updateBooking(p) });
       case 'deleteLead':
         return json({ ok: true, result: deleteLead(p) });
       default:
@@ -174,6 +198,14 @@ function provision(p) {
     sheet.getRange(1, 1, 1, def.headers.length).setValues([def.headers]).setFontWeight('bold');
     sheet.setFrozenRows(1);
   });
+
+  // Seed the Config tab (the chatbot's editable brain).
+  var cfg = ss.insertSheet();
+  cfg.setName(CONFIG_TAB.name);
+  cfg.getRange(1, 1, 1, 2).setValues([CONFIG_TAB.headers]).setFontWeight('bold');
+  cfg.setFrozenRows(1);
+  var rows = defaultConfig(name, p.industry);
+  cfg.getRange(2, 1, rows.length, 2).setValues(rows);
 
   var registry = registrySheet();
   registry.appendRow([clientId, name, p.industry || '', ss.getId(), token, new Date()]);
@@ -285,6 +317,39 @@ function deleteLead(p) {
     }
   }
   throw new Error('Lead not found: ' + p.id);
+}
+
+/** Update a Booking's Status in place by Booking ID (e.g. mark Done/Cancelled). */
+function updateBooking(p) {
+  var sheet = clientSheet(p.clientId, 'bookings');
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var idCol = headers.indexOf('Booking ID');
+  var statusCol = headers.indexOf('Status');
+  for (var r = 1; r < data.length; r++) {
+    if (String(data[r][idCol]) === String(p.id)) {
+      if (p.status) sheet.getRange(r + 1, statusCol + 1).setValue(p.status);
+      return { row: r + 1, status: p.status };
+    }
+  }
+  throw new Error('Booking not found: ' + p.id);
+}
+
+/** Read the client's Config tab into a { key: value } object (the bot's brain). */
+function getConfig(clientId) {
+  if (!clientId) throw new Error('Missing clientId.');
+  var rec = findClient(clientId);
+  if (!rec) throw new Error('Unknown clientId: ' + clientId);
+  var ss = SpreadsheetApp.openById(rec.spreadsheetId);
+  var sheet = ss.getSheetByName(CONFIG_TAB.name);
+  var out = { 'Business name': rec.name };
+  if (!sheet) return out; // not seeded (older sheet) — fall back to the name
+  var values = sheet.getDataRange().getValues();
+  for (var r = 1; r < values.length; r++) {
+    var key = String(values[r][0] || '').trim();
+    if (key) out[key] = formatCell(values[r][1]);
+  }
+  return out;
 }
 
 // ── Registry + sheet helpers ────────────────────────────────────────────────

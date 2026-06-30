@@ -7,6 +7,13 @@
       "runtimeArgs": ["run", "dev"],
       "port": 5173,
       "autoPort": true
+    },
+    {
+      "name": "template-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", ".claude/skills/lead-saving-system/assets/template", "run", "dev"],
+      "port": 5180,
+      "autoPort": true
     }
   ]
 }

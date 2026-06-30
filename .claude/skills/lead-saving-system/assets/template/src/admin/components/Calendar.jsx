@@ -1,20 +1,17 @@
-// Month calendar card. Every important date from the Sheet becomes a
-// color-coded event: prototype due dates (clay), activations (green), and
-// contract end dates (red). Tap a day to read its events below the grid.
+// Month calendar card — the booking calendar. Every booking date becomes a clay
+// event; sales show as green markers. Tap a day to read its events below the grid.
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { parseDate, toISODate, fmtDate, IconChevronLeft, IconChevronRight } from './shared.jsx'
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-// Event types → swatch. Uses theme tokens; alert/end gets an explicit oklch tint.
 const TYPES = {
-  due: { dot: 'bg-clay', text: 'text-clay-ink', tint: 'bg-clay-tint', label: 'Prototype due' },
-  activation: { dot: 'bg-win', text: 'text-win', tint: 'bg-win-tint', label: 'Activation' },
-  end: { dot: 'bg-alert', text: 'text-alert', tint: 'bg-[oklch(0.95_0.04_27)]', label: 'Contract ends' },
+  booking: { dot: 'bg-clay', label: 'Booking' },
+  sale: { dot: 'bg-win', label: 'Sale' },
 }
 
-function buildEvents(potential, closed) {
+function buildEvents(bookings, sales) {
   const map = {} // isoDate -> [{ type, title, sub }]
   const push = (value, ev) => {
     const d = parseDate(value)
@@ -22,17 +19,13 @@ function buildEvents(potential, closed) {
     const key = toISODate(d)
     ;(map[key] ||= []).push(ev)
   }
-  potential.forEach((p) => {
-    if (p.Status === 'Canceled') return
-    push(p['Receive/Due Date'], {
-      type: 'due',
-      title: p['Client Name'],
-      sub: p['Need (prototype)'] || p['Interest in Package'] || 'Prototype due',
-    })
+  ;(bookings || []).forEach((b) => {
+    if (b.Status === 'Cancelled') return
+    const time = b.Time ? ` · ${b.Time}` : ''
+    push(b.Date, { type: 'booking', title: b.Name || 'Booking', sub: `${b.Service || 'Appointment'}${time}` })
   })
-  closed.forEach((c) => {
-    push(c['Activation Date'], { type: 'activation', title: c['Client Name'], sub: `${c['Package Bought']} activated` })
-    push(c['End Date'], { type: 'end', title: c['Client Name'], sub: `${c['Package Bought']} ends` })
+  ;(sales || []).forEach((s) => {
+    push(s.Date, { type: 'sale', title: s.Name || 'Sale', sub: `${s.Item || 'Sale'}${s.Amount ? ` · ${s.Amount}` : ''}` })
   })
   return map
 }
@@ -47,19 +40,16 @@ function monthGrid(year, month) {
   })
 }
 
-export default function Calendar({ potential, closed }) {
+export default function Calendar({ bookings, sales }) {
   const reduce = useReducedMotion()
   const today = new Date()
   const todayKey = toISODate(today)
   const [cursor, setCursor] = useState({ y: today.getFullYear(), m: today.getMonth() })
   const [selected, setSelected] = useState(todayKey)
 
-  const events = useMemo(() => buildEvents(potential, closed), [potential, closed])
+  const events = useMemo(() => buildEvents(bookings, sales), [bookings, sales])
   const days = useMemo(() => monthGrid(cursor.y, cursor.m), [cursor])
-  const monthLabel = new Date(cursor.y, cursor.m, 1).toLocaleDateString(undefined, {
-    month: 'long',
-    year: 'numeric',
-  })
+  const monthLabel = new Date(cursor.y, cursor.m, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
   const selectedEvents = events[selected] || []
 
   const shift = (delta) => {
@@ -71,43 +61,26 @@ export default function Calendar({ potential, closed }) {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      {/* The calendar card */}
       <div className="mx-auto w-full max-w-md">
         <div className="overflow-hidden rounded-3xl border border-line bg-surface shadow-lift">
           <div className="px-4 pb-5 pt-4 sm:px-5">
-            {/* month header */}
             <div className="mb-3 flex items-center justify-between px-1">
               <h3 className="text-xl font-bold text-ink" style={{ fontFamily: 'var(--font-display)' }}>
                 {monthLabel}
               </h3>
               <div className="flex items-center gap-1">
-                <button
-                  onClick={() => shift(-1)}
-                  aria-label="Previous month"
-                  className="grid h-8 w-8 place-items-center rounded-full text-clay-ink transition-colors hover:bg-clay-tint"
-                >
+                <button onClick={() => shift(-1)} aria-label="Previous month" className="grid h-8 w-8 place-items-center rounded-full text-clay-ink transition-colors hover:bg-clay-tint">
                   <IconChevronLeft className="h-5 w-5" />
                 </button>
-                <button
-                  onClick={() => {
-                    setCursor({ y: today.getFullYear(), m: today.getMonth() })
-                    setSelected(todayKey)
-                  }}
-                  className="rounded-full px-2.5 py-1 text-xs font-semibold text-clay-ink transition-colors hover:bg-clay-tint"
-                >
+                <button onClick={() => { setCursor({ y: today.getFullYear(), m: today.getMonth() }); setSelected(todayKey) }} className="rounded-full px-2.5 py-1 text-xs font-semibold text-clay-ink transition-colors hover:bg-clay-tint">
                   Today
                 </button>
-                <button
-                  onClick={() => shift(1)}
-                  aria-label="Next month"
-                  className="grid h-8 w-8 place-items-center rounded-full text-clay-ink transition-colors hover:bg-clay-tint"
-                >
+                <button onClick={() => shift(1)} aria-label="Next month" className="grid h-8 w-8 place-items-center rounded-full text-clay-ink transition-colors hover:bg-clay-tint">
                   <IconChevronRight className="h-5 w-5" />
                 </button>
               </div>
             </div>
 
-            {/* weekday header */}
             <div className="grid grid-cols-7 text-center">
               {WEEKDAYS.map((d) => (
                 <div key={d} className="pb-2 text-[0.7rem] font-semibold uppercase tracking-wide text-muted">
@@ -116,7 +89,6 @@ export default function Calendar({ potential, closed }) {
               ))}
             </div>
 
-            {/* day grid */}
             <div className="grid grid-cols-7 gap-y-1">
               {days.map((d) => {
                 const key = toISODate(d)
@@ -126,21 +98,14 @@ export default function Calendar({ potential, closed }) {
                 const dayEvents = events[key] || []
                 const types = [...new Set(dayEvents.map((e) => e.type))]
                 return (
-                  <button
-                    key={key}
-                    onClick={() => setSelected(key)}
-                    className="flex flex-col items-center py-1"
-                    aria-label={`${fmtDate(key)}${dayEvents.length ? `, ${dayEvents.length} events` : ''}`}
-                  >
-                    <span
-                      className={[
-                        'grid h-9 w-9 place-items-center rounded-full text-sm transition-colors',
-                        !inMonth ? 'text-muted/50' : 'text-ink',
-                        isToday ? 'bg-clay font-bold text-white' : '',
-                        isSelected && !isToday ? 'bg-clay-tint font-semibold text-clay-ink' : '',
-                        !isSelected && !isToday ? 'hover:bg-sunken' : '',
-                      ].join(' ')}
-                    >
+                  <button key={key} onClick={() => setSelected(key)} className="flex flex-col items-center py-1" aria-label={`${fmtDate(key)}${dayEvents.length ? `, ${dayEvents.length} events` : ''}`}>
+                    <span className={[
+                      'grid h-9 w-9 place-items-center rounded-full text-sm transition-colors',
+                      !inMonth ? 'text-muted/50' : 'text-ink',
+                      isToday ? 'bg-clay font-bold text-white' : '',
+                      isSelected && !isToday ? 'bg-clay-tint font-semibold text-clay-ink' : '',
+                      !isSelected && !isToday ? 'hover:bg-sunken' : '',
+                    ].join(' ')}>
                       {d.getDate()}
                     </span>
                     <span className="mt-0.5 flex h-1.5 items-center gap-0.5">
@@ -154,22 +119,14 @@ export default function Calendar({ potential, closed }) {
             </div>
           </div>
 
-          {/* selected-day agenda */}
           <div className="border-t border-line bg-sunken px-5 py-4">
             <p className="mb-2 text-xs font-semibold text-ink-soft">
               {new Date(selected).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
             </p>
             <AnimatePresence mode="wait">
-              <motion.div
-                key={selected}
-                initial={reduce ? false : { opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduce ? undefined : { opacity: 0 }}
-                transition={{ duration: 0.18 }}
-                className="flex flex-col gap-2"
-              >
+              <motion.div key={selected} initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={reduce ? undefined : { opacity: 0 }} transition={{ duration: 0.18 }} className="flex flex-col gap-2">
                 {selectedEvents.length === 0 ? (
-                  <p className="py-2 text-sm text-muted">No events.</p>
+                  <p className="py-2 text-sm text-muted">No bookings.</p>
                 ) : (
                   selectedEvents.map((e, i) => (
                     <div key={i} className="flex items-start gap-2.5">
@@ -187,7 +144,6 @@ export default function Calendar({ potential, closed }) {
         </div>
       </div>
 
-      {/* legend + upcoming, beside the calendar on wide screens */}
       <div className="flex flex-col gap-4">
         <div className="rounded-2xl border border-line bg-surface p-5">
           <h4 className="text-sm font-bold text-ink">Legend</h4>
@@ -230,9 +186,7 @@ function UpcomingList({ events, todayKey, onPick }) {
                 <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${TYPES[e.type].dot}`} />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-ink group-hover:text-clay-ink">{e.title}</p>
-                  <p className="truncate text-xs text-ink-soft">
-                    {fmtDate(e.key)} · {e.sub}
-                  </p>
+                  <p className="truncate text-xs text-ink-soft">{fmtDate(e.key)} · {e.sub}</p>
                 </div>
               </button>
             </li>

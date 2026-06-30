@@ -32,10 +32,15 @@ export function toISODate(d) {
 // Keyed to the STATUSES in config.js. If you add a status, add a style here.
 
 const STATUS_STYLE = {
-  Open: 'bg-clay-tint text-clay-ink',
-  'In Progress': 'bg-[oklch(0.95_0.03_255)] text-[oklch(0.45_0.12_255)]',
-  Completed: 'bg-win-tint text-win',
-  Canceled: 'bg-[oklch(0.95_0.04_27)] text-alert',
+  // Lead statuses
+  New: 'bg-clay-tint text-clay-ink',
+  Contacted: 'bg-[oklch(0.95_0.03_255)] text-[oklch(0.45_0.12_255)]',
+  Won: 'bg-win-tint text-win',
+  Lost: 'bg-[oklch(0.95_0.04_27)] text-alert',
+  // Booking statuses
+  Booked: 'bg-clay-tint text-clay-ink',
+  Done: 'bg-win-tint text-win',
+  Cancelled: 'bg-[oklch(0.95_0.04_27)] text-alert',
 }
 
 export function StatusPill({ status }) {

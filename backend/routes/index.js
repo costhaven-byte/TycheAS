@@ -6,10 +6,12 @@
 import { Router } from 'express';
 import metaRoutes from './metaRoutes.js';
 import chatbotRoutes from './chatbotRoutes.js';
+import adminRoutes from './adminRoutes.js';
 
 const router = Router();
 
 router.use('/meta', metaRoutes);
 router.use('/chatbot', chatbotRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

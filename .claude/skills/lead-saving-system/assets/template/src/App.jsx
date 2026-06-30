@@ -1,7 +1,25 @@
-import { useSyncExternalStore } from 'react'
+import { useSyncExternalStore, useEffect } from 'react'
 import LeadForm from './LeadForm.jsx'
 import AdminApp from './admin/AdminApp.jsx'
 import { BRAND } from './admin/config.js'
+
+// Inject the embeddable chatbot widget when a backend is configured. The widget
+// (public/lucrator-widget.js) speaks as this client's business and books into
+// their sheet. Set VITE_API_BASE_URL + VITE_CHATBOT_CLIENT_ID to enable it.
+function useChatWidget() {
+  useEffect(() => {
+    const api = import.meta.env.VITE_API_BASE_URL
+    if (!api || document.getElementById('lucrator-widget-script')) return
+    const s = document.createElement('script')
+    s.id = 'lucrator-widget-script'
+    s.src = '/lucrator-widget.js'
+    s.setAttribute('data-api', api)
+    s.setAttribute('data-client-id', import.meta.env.VITE_CHATBOT_CLIENT_ID || '')
+    s.setAttribute('data-name', BRAND.name)
+    s.setAttribute('data-launcher', `Chat with ${BRAND.name}`)
+    document.body.appendChild(s)
+  }, [])
+}
 
 // Minimal zero-dependency hash routing. The public landing is the default;
 // `#/admin` swaps in the internal dashboard on the same deploy.
@@ -47,5 +65,6 @@ function Landing() {
 
 export default function App() {
   const isAdmin = useIsAdmin()
+  useChatWidget()
   return isAdmin ? <AdminApp /> : <Landing />
 }

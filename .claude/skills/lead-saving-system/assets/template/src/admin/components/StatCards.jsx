@@ -1,26 +1,30 @@
-// Compact pipeline summary — a single strip of counts, not a hero-metric wall.
-import { parseDate } from './shared.jsx'
+// Compact summary strip — leads, bookings, and sales at a glance.
+import { parseDate, toISODate } from './shared.jsx'
 
 function sameMonth(value, ref) {
   const d = parseDate(value)
   return d && d.getMonth() === ref.getMonth() && d.getFullYear() === ref.getFullYear()
 }
 
-export default function StatCards({ potential, closed }) {
+export default function StatCards({ leads, bookings, sales }) {
   const now = new Date()
-  const open = potential.filter((p) => p.Status === 'Open').length
-  const inProgress = potential.filter((p) => p.Status === 'In Progress').length
-  const completed = potential.filter((p) => p.Status === 'Completed').length
-  const canceled = potential.filter((p) => p.Status === 'Canceled').length
-  const closedThisMonth = closed.filter((c) => sameMonth(c['Activation Date'], now)).length
+  const todayKey = toISODate(now)
+
+  const newLeads = leads.filter((l) => l.Status === 'New').length
+  const upcoming = bookings.filter((b) => b.Status !== 'Cancelled' && toISODate(parseDate(b.Date)) >= todayKey).length
+  const bookingsToday = bookings.filter((b) => b.Status !== 'Cancelled' && toISODate(parseDate(b.Date)) === todayKey).length
+  const salesThisMonth = sales.filter((s) => sameMonth(s.Date, now)).length
+  const revenueThisMonth = sales
+    .filter((s) => sameMonth(s.Date, now))
+    .reduce((sum, s) => sum + (Number(String(s.Amount).replace(/[^\d.]/g, '')) || 0), 0)
 
   const stats = [
-    { label: 'Open prospects', value: open, accent: 'text-clay-ink' },
-    { label: 'In progress', value: inProgress, accent: 'text-[oklch(0.45_0.12_255)]' },
-    { label: 'Marked completed', value: completed, accent: 'text-win' },
-    { label: 'Closed deals', value: closed.length, accent: 'text-ink' },
-    { label: 'Activated this month', value: closedThisMonth, accent: 'text-ink' },
-    { label: 'Canceled', value: canceled, accent: 'text-muted' },
+    { label: 'Total leads', value: leads.length, accent: 'text-ink' },
+    { label: 'New leads', value: newLeads, accent: 'text-clay-ink' },
+    { label: 'Upcoming bookings', value: upcoming, accent: 'text-[oklch(0.45_0.12_255)]' },
+    { label: 'Bookings today', value: bookingsToday, accent: 'text-clay-ink' },
+    { label: 'Sales this month', value: salesThisMonth, accent: 'text-win' },
+    { label: 'Revenue this month', value: revenueThisMonth ? revenueThisMonth.toLocaleString() : '—', accent: 'text-win' },
   ]
 
   return (

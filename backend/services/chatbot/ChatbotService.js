@@ -12,6 +12,7 @@ import logger from '../../utils/logger.js';
 import { buildSystemPrompt } from './systemPrompt.js';
 import { getToolDefinitions, executeTool } from './tools.js';
 import * as crm from '../crm/CrmService.js';
+import { getClientConfig } from '../crm/ClientConfigService.js';
 
 const MAX_HISTORY = 12; // turns of context we keep — this bot needs little
 const MAX_MESSAGE_CHARS = 1000; // per-message guard against abuse
@@ -94,10 +95,12 @@ export async function ask({ messages, lang = 'en', clientId } = {}) {
   // running `convo` array grows as the model calls tools and we feed results
   // back, so it can confirm a booking/sale in the same turn.
   const tools = getToolDefinitions(); // empty array → bot stays FAQ-only
+  // Load this client's persona/knowledge from their Sheet (null → Lucrator persona).
+  const client = await getClientConfig(clientId);
   const convo = [
     {
       role: 'system',
-      content: buildSystemPrompt(lang === 'ar' ? 'ar' : 'en', { agentEnabled: tools.length > 0 }),
+      content: buildSystemPrompt(lang === 'ar' ? 'ar' : 'en', { agentEnabled: tools.length > 0, client }),
     },
     ...cleaned,
   ];
