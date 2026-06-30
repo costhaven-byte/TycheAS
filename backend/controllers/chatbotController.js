@@ -21,8 +21,10 @@ export const health = (_req, res) => {
 };
 
 export const ask = asyncHandler(async (req, res) => {
-  const { messages, lang } = req.body;
-  const { reply, actions } = await chatbot.ask({ messages, lang });
+  const { messages, lang, clientId } = req.body;
+  // clientId tells the agent whose sheet to book into (the client whose site this
+  // widget is on). Falls back to the backend's default client (env.crm.clientId).
+  const { reply, actions } = await chatbot.ask({ messages, lang, clientId });
 
   // express-rate-limit populates req.rateLimit on the chatLimiter'd route.
   const remaining = typeof req.rateLimit?.remaining === 'number' ? req.rateLimit.remaining : null;

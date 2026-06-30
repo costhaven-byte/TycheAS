@@ -41,12 +41,17 @@ const env = {
   // FAQ chatbot (public widget on the marketing site). Powered by OpenRouter
   // (OpenAI-compatible API that proxies to many models, including Claude).
   chatbot: {
-    // OpenRouter API key — server-side only, never exposed to the browser.
-    apiKey: read('OPENROUTER_API_KEY'),
-    // OpenRouter base URL (override only if self-hosting a proxy).
-    baseUrl: read('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
-    // Model slug. Haiku is plenty for a scripted FAQ bot and is among the
-    // cheapest/fastest — browse openrouter.ai/models for other slugs.
+    // LLM API key — server-side only, never exposed to the browser. Provider-
+    // agnostic: works with any OpenAI-compatible endpoint (OpenRouter, Gemini's
+    // OpenAI-compat layer, etc.). CHATBOT_API_KEY is preferred; OPENROUTER_API_KEY
+    // is kept as a fallback for older configs.
+    apiKey: read('CHATBOT_API_KEY', read('OPENROUTER_API_KEY')),
+    // Base URL of the OpenAI-compatible API. Examples:
+    //   OpenRouter: https://openrouter.ai/api/v1
+    //   Gemini:     https://generativelanguage.googleapis.com/v1beta/openai
+    baseUrl: read('CHATBOT_BASE_URL', read('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')),
+    // Model slug for the chosen provider, e.g. 'anthropic/claude-haiku-4.5'
+    // (OpenRouter) or 'gemini-2.0-flash' (Gemini). Set CHATBOT_MODEL in .env.
     model: read('CHATBOT_MODEL', 'anthropic/claude-haiku-4.5'),
     // Optional attribution headers OpenRouter uses for its rankings page.
     siteUrl: read('OPENROUTER_SITE_URL', read('PRODUCTION_FRONTEND_URL', '')),
@@ -65,8 +70,13 @@ const env = {
   // dashboard uses (src/admin/config.js). Without these, the agent stays in
   // "FAQ-only" mode — it can talk, but it can't book or sell.
   crm: {
+    // The Platform Web App /exec URL (google/Platform.gs), deployed ONCE.
     appsScriptUrl: read('APPS_SCRIPT_URL'),
+    // The ADMIN token from Platform setup() — lets the backend write to ANY client.
     apiToken: read('CRM_API_TOKEN'),
+    // Which client this backend instance books/sells for by default. Multi-tenant
+    // routing (page/IG → clientId) can override per request later.
+    clientId: read('CRM_CLIENT_ID'),
   },
 
   // Meta / Graph API

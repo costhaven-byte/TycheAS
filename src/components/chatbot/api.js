@@ -6,6 +6,11 @@
 
 const BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '')
 
+// Which client this widget books/sells for. Set VITE_CHATBOT_CLIENT_ID per client
+// deploy so one backend can serve many clients. Optional — the backend falls back
+// to its own default client when omitted.
+const CLIENT_ID = import.meta.env.VITE_CHATBOT_CLIENT_ID || undefined
+
 /**
  * Ask the assistant. Besides answering, the bot may book an appointment or record
  * a sale — those land in `actions`, which the widget surfaces as a confirmation.
@@ -17,7 +22,7 @@ export async function askChatbot(messages, lang) {
   const res = await fetch(`${BASE}/api/chatbot/ask`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages, lang }),
+    body: JSON.stringify({ messages, lang, clientId: CLIENT_ID }),
   })
 
   // The limit handler also returns 200, so a non-OK response is a real error.

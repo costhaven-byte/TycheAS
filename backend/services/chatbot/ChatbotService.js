@@ -21,6 +21,12 @@ export function isConfigured() {
   return Boolean(env.chatbot.apiKey);
 }
 
+// OpenRouter wants attribution headers; other OpenAI-compatible providers reject
+// unknown headers, so we gate them on the configured base URL.
+function isOpenRouter() {
+  return (env.chatbot.baseUrl || '').includes('openrouter');
+}
+
 // Whether the booking/buying agent is fully wired (model + CRM both available).
 export function agentEnabled() {
   return isConfigured() && crm.isConfigured();
@@ -42,8 +48,10 @@ async function callModel(messages, tools) {
       headers: {
         Authorization: `Bearer ${env.chatbot.apiKey}`,
         'Content-Type': 'application/json',
-        ...(env.chatbot.siteUrl ? { 'HTTP-Referer': env.chatbot.siteUrl } : {}),
-        ...(env.chatbot.appName ? { 'X-Title': env.chatbot.appName } : {}),
+        // Attribution headers are OpenRouter-specific; only send them there so
+        // other providers (e.g. Gemini's OpenAI-compat endpoint) don't choke.
+        ...(isOpenRouter() && env.chatbot.siteUrl ? { 'HTTP-Referer': env.chatbot.siteUrl } : {}),
+        ...(isOpenRouter() && env.chatbot.appName ? { 'X-Title': env.chatbot.appName } : {}),
       },
     },
   );
@@ -55,9 +63,12 @@ async function callModel(messages, tools) {
  * @param {object} args
  * @param {Array<{role:'user'|'assistant', content:string}>} args.messages  Full chat history, oldest first.
  * @param {'en'|'ar'} [args.lang]
+ * @param {string} [args.clientId]  Which client's sheet to book/sell into. Set by
+ *   the server from the request context (the widget's client, or the page→client
+ *   map for DMs) — NEVER chosen by the model. Defaults to env.crm.clientId.
  * @returns {Promise<{reply:string, actions:Array<object>}>} the reply plus any booking/sale that landed
  */
-export async function ask({ messages, lang = 'en' }) {
+export async function ask({ messages, lang = 'en', clientId } = {}) {
   if (!isConfigured()) {
     throw new ApiError(503, 'The assistant is not available right now.', {
       code: 'CHATBOT_NOT_CONFIGURED',
@@ -112,7 +123,7 @@ export async function ask({ messages, lang = 'en' }) {
           } catch {
             args = {};
           }
-          const { forModel, action } = await executeTool(tc.function?.name, args);
+          const { forModel, action } = await executeTool(tc.function?.name, args, { clientId });
           if (action) actions.push(action);
           convo.push({
             role: 'tool',

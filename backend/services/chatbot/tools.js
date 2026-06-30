@@ -65,14 +65,19 @@ export function getToolDefinitions() {
 /**
  * Run a tool call. Always resolves (never throws) so one failed tool can't kill
  * the whole chat turn — the model gets a structured result and can respond.
+ * @param {string} name   the tool name the model called
+ * @param {object} args   arguments the MODEL supplied (customer name, date, …)
+ * @param {object} [ctx]  server-supplied context. ctx.clientId decides which
+ *   client's sheet the booking/sale lands in — injected here, never model-chosen.
  * @returns {Promise<{ forModel: object, action: object|null }>}
  *   forModel: the JSON the model sees as the tool result.
  *   action:   a record of what actually happened, surfaced to the client UI.
  */
-export async function executeTool(name, args = {}) {
+export async function executeTool(name, args = {}, ctx = {}) {
   try {
     if (name === 'book_appointment') {
       const r = await crm.bookAppointment({
+        clientId: ctx.clientId,
         customerName: args.customerName,
         contact: args.contact,
         date: args.date,
@@ -82,12 +87,13 @@ export async function executeTool(name, args = {}) {
       });
       return {
         forModel: { ok: true, booked: true, ...r },
-        action: { type: 'booking', customerName: r.customerName, date: r.date, service: r.service, clientId: r.clientId },
+        action: { type: 'booking', customerName: r.customerName, date: r.date, service: r.service, bookingId: r.bookingId },
       };
     }
 
     if (name === 'record_sale') {
       const r = await crm.recordSale({
+        clientId: ctx.clientId,
         customerName: args.customerName,
         contact: args.contact,
         package: args.package,
@@ -99,7 +105,7 @@ export async function executeTool(name, args = {}) {
       });
       return {
         forModel: { ok: true, sold: true, ...r },
-        action: { type: 'sale', customerName: r.customerName, package: r.package, activationDate: r.activationDate, clientId: r.clientId },
+        action: { type: 'sale', customerName: r.customerName, package: r.item, date: r.date, saleId: r.saleId },
       };
     }
 

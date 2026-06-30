@@ -1,24 +1,33 @@
 // services/crm/CrmService.js
 // The booking/buying agent's hands. Turns a chatbot conversation outcome into a
-// real row in the Sheet that backs the admin dashboard + calendar:
+// real row in the CLIENT's Google Sheet via the multi-tenant Platform
+// (google/Platform.gs). Every call is routed to a specific client by `clientId`:
 //
-//   bookAppointment() → a "Potential deals" row whose Receive/Due Date is the
-//                       booked date. The dashboard Calendar renders that date as
-//                       an event the client sees.  (Apps Script action: addLead)
+//   bookAppointment() → a row on the client's "Bookings" tab (action: addBooking).
+//                       The dashboard Calendar renders the date as a booking the
+//                       client sees.
 //
-//   recordSale()      → a "Closed deals" row whose Activation Date is the sale
-//                       date. The Calendar renders that as a green activation
-//                       dot, and it shows on the Closed tab.  (action: moveToClosed)
+//   recordSale()      → a row on the client's "Sales" tab (action: recordSale).
 //
-// Both actions are ALREADY deployed in google/Code.gs — no Sheet redeploy needed.
+// The Platform is deployed ONCE and serves all clients; adding a client never
+// requires a redeploy. The backend authenticates with the ADMIN token, so it can
+// write to any client's sheet.
 
 import * as sheet from './SheetClient.js';
 import env from '../../config/index.js';
 import ApiError from '../../utils/ApiError.js';
 import logger from '../../utils/logger.js';
 
+// Configured only when we can reach the Platform AND know which client to write
+// to. Without a clientId the agent stays FAQ-only (it won't promise a booking).
 export function isConfigured() {
-  return sheet.isConfigured();
+  return sheet.isConfigured() && Boolean(env.crm.clientId);
+}
+
+function resolveClientId(input) {
+  const id = input.clientId || env.crm.clientId;
+  if (!id) throw ApiError.badRequest('No clientId configured for bookings/sales.', { code: 'CRM_NO_CLIENT' });
+  return id;
 }
 
 // Accept a few human date formats, normalize to yyyy-MM-dd (what the Sheet/calendar expect).
@@ -37,66 +46,58 @@ function requireField(value, name) {
 }
 
 /**
- * Book an appointment for the visitor — lands on the calendar the client sees.
- * @returns {Promise<{clientId:string, date:string, customerName:string}>}
+ * Book an appointment for the visitor — lands on the client's Bookings tab and
+ * the dashboard calendar.
+ * @returns {Promise<{bookingId:string, date:string, customerName:string, service:string}>}
  */
 export async function bookAppointment(input = {}) {
+  const clientId = resolveClientId(input);
   const customerName = requireField(input.customerName, 'customerName');
   const contact = requireField(input.contact, 'contact');
   const date = normalizeDate(requireField(input.date, 'date'));
   const service = input.service ? String(input.service).trim() : 'Appointment';
 
-  // Pack the visitor's contact + reason into the "Need (prototype)" note so the
-  // team has everything to follow up, and mark the source so it's clearly a
-  // chatbot booking rather than a manually-added prospect.
-  const note = [
-    `📅 Booking via ${env.chatbot.agentName}`,
-    `Contact: ${contact}`,
-    input.notes ? `Notes: ${String(input.notes).trim()}` : '',
-  ]
-    .filter(Boolean)
-    .join(' — ');
-
-  const res = await sheet.call('addLead', {
-    clientName: customerName,
-    industry: input.industry || '',
-    interestPackage: service,
-    need: note,
-    dueDate: date,
-    status: 'Open',
+  const res = await sheet.call('addBooking', {
+    clientId,
+    name: customerName,
+    contact,
+    service,
+    date,
+    time: input.time || '',
+    status: 'Booked',
+    notes: input.notes || '',
+    source: env.chatbot.agentName,
   });
 
-  const clientId = res?.row?.['Client ID'] || '';
-  logger.info('Chatbot agent booked an appointment', { customerName, date, clientId });
-  return { clientId, date, customerName, service };
+  const bookingId = res?.row?.['Booking ID'] || '';
+  logger.info('Chatbot agent booked an appointment', { clientId, customerName, date, bookingId });
+  return { bookingId, date, customerName, service };
 }
 
 /**
- * Record a completed sale — lands as a closed deal / activation on the calendar.
- * @returns {Promise<{clientId:string, package:string, activationDate:string}>}
+ * Record a completed sale — lands on the client's Sales tab.
+ * @returns {Promise<{saleId:string, item:string, date:string, customerName:string}>}
  */
 export async function recordSale(input = {}) {
+  const clientId = resolveClientId(input);
   const customerName = requireField(input.customerName, 'customerName');
   const contact = requireField(input.contact, 'contact');
-  const pkg = requireField(input.package, 'package');
-  const activationDate = normalizeDate(input.activationDate || new Date());
+  const item = requireField(input.package || input.item, 'package');
+  const date = normalizeDate(input.activationDate || input.date || new Date());
 
-  const res = await sheet.call('moveToClosed', {
-    // No clientId → moveToClosed simply appends to "Closed deals" (the prospect
-    // removal step finds nothing and no-ops), which is exactly what we want for a
-    // brand-new sale the bot closed directly.
-    clientName: customerName,
-    industry: input.industry || '',
-    packageBought: pkg,
-    duration: input.duration || '',
-    closer: env.chatbot.agentName,
-    activationDate,
-    endDate: input.endDate || '',
+  const res = await sheet.call('recordSale', {
+    clientId,
+    name: customerName,
+    contact,
+    item,
+    amount: input.amount || '',
+    date,
+    notes: input.notes || '',
   });
 
-  const clientId = res?.row?.['Client ID'] || '';
-  logger.info('Chatbot agent recorded a sale', { customerName, pkg, activationDate, clientId, contact });
-  return { clientId, package: pkg, activationDate, customerName };
+  const saleId = res?.row?.['Sale ID'] || '';
+  logger.info('Chatbot agent recorded a sale', { clientId, customerName, item, date, saleId });
+  return { saleId, item, date, customerName };
 }
 
 export default { isConfigured, bookAppointment, recordSale };
