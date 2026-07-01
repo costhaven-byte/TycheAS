@@ -14,6 +14,13 @@
       "runtimeArgs": ["--prefix", ".claude/skills/lead-saving-system/assets/template", "run", "dev"],
       "port": 5180,
       "autoPort": true
+    },
+    {
+      "name": "outreach-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "outreach/data/audits", "-l", "4599"],
+      "port": 4599,
+      "autoPort": true
     }
   ]
 }

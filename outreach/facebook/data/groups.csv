@@ -1,0 +1,15 @@
+tier,vertical,region,groupNameOrSearch,selfPromoRule,adminEndorsePlay,status,joinedAt,notes
+1,hair salon,US,"Salon Owners / Salon & Spa Business Owners","no promo except promo-thread day",offer free "recover after-hours booking DMs" mini-training,prospect,,search FB + sort by members, check "posted today"
+1,hair salon,UK,"UK Salon Owners / Hair Salon Business UK","weekly promo thread only",same,prospect,,
+1,nail salon,US,"Nail Techs & Salon Owners / Nail Business Growth","DM-only, no links",offer free booking-flow audit for members,prospect,,
+1,dental practice,US,"Dental Practice Owners / Dental Office Managers","no solicitation",offer "front-desk missed-call recovery" teardown,prospect,,high deal value, slow to trust — lead with numbers
+1,dental practice,UK,"UK Dental Practice Owners / Dental Business UK","admin-approved posts only",same,prospect,,say "enquiries" not "leads", "£"
+1,restaurant,US,"Restaurant Owners / Independent Restaurant Owners","no self-promo",offer reservations-DM automation demo,prospect,,
+1,restaurant,UK,"UK Restaurant & Bar Owners","promo Friday only",same,prospect,,"covers", "bookings", "the diary"
+1,cafe,US,"Coffee Shop Owners / Cafe Owners Network","no links in posts",offer loyalty + DM-order setup,prospect,,
+1,gym,US,"Gym Owners / Fitness Studio Owners","value-only",offer lead-follow-up automation teardown,prospect,,
+1,trades,US,"Roofing/HVAC/Plumbing Business Owners","no soliciting",offer missed-call-to-text demo,prospect,,"jobs", "quotes", "the truck"
+1,trades,UK,"UK Trades Business Owners / Tradesmen in Business","weekly ad thread",same,prospect,,"enquiries", "the van", "quote"
+2,local geo,US,"[City] Small Business Owners / [Metro] Business Network","varies — read pinned",comment value on 'recommend a...' posts,prospect,,cross-match against data/leads.csv cities
+2,local geo,UK,"[City/County] Small Business Owners UK","varies",same,prospect,,
+3,broad SMB,US,"Small Business Marketing / Service Business Growth","promo threads",authority posts only,prospect,,volume/reach, low precision

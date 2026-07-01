@@ -1,0 +1,22 @@
+{
+  "name": "lucrator-outreach",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Find local Texas businesses on Google Maps, scrape a contact email, and send a curated Lucrator outreach email (A/B tested, rate-limited).",
+  "scripts": {
+    "find": "node find.js",
+    "send": "node send.js",
+    "stats": "node stats.js",
+    "audit": "node audit.js",
+    "fb:stats": "node facebook/stats.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "nodemailer": "^6.9.14"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
